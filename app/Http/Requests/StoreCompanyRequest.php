@@ -68,6 +68,10 @@ class StoreCompanyRequest extends FormRequest
 
             'tags' => 'nullable|array',
             'tags.*' => 'nullable|string',
+
+            'apps' => 'nullable|array',
+            'apps.*.name' => 'nullable|exists:apps,id',
+            'apps.*.value' => 'required_with:apps.*.name|string|max:255',
         ];
     }
 }

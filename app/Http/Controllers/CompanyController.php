@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
+use App\Models\App;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\CompanyApp;
 use App\Models\Tag;
 use App\Models\User;
 use Buglinjo\LaravelWebp\Webp;
@@ -106,9 +108,10 @@ class CompanyController extends Controller
             }
         })->get();
         $categories = Category::all();
+        $apps = App::where('active', true)->get();
 
         $openingHours = "Segunda-feira: 08h às 18h\nTerça-feira: 08h às 18h\nQuarta-feira: 08h às 18h\nQuinta-feira: 08h às 18h\nSexta-feira: 08h às 18h\nSábado: Fechado\nDomingo e Feriado: Fechado";
-        return view('companies.create', compact('clients', 'categories', 'openingHours'));
+        return view('companies.create', compact('clients', 'categories', 'apps', 'openingHours'));
     }
 
     /**
@@ -162,6 +165,19 @@ class CompanyController extends Controller
                 $company->tags()->attach($tag);
             }
 
+            foreach ($validated['apps'] as $app) {
+                if (!isset($app['name']) || !isset($app['value'])) continue;
+
+                CompanyApp::updateOrCreate([
+                    'company_id' => $company->id,
+                    'app_id' => $app['name'],
+                ],[
+                    'company_id' => $company->id,
+                    'app_id' => $app['name'],
+                    'url' => $app['value'],
+                ]);
+            }
+
             DB::commit();
 
             Alert::toast('Empresa cadastrada com sucesso.', 'success');
@@ -185,7 +201,9 @@ class CompanyController extends Controller
             }
         })->get();
         $categories = Category::all();
-        return view('companies.edit', compact('company', 'clients', 'categories'));
+        $apps = App::where('active', true)->get();
+
+        return view('companies.edit', compact('company', 'clients', 'categories', 'apps'));
     }
 
     /**
@@ -246,6 +264,24 @@ class CompanyController extends Controller
             foreach ($validated['tags'] as $name) {
                 $tag = Tag::updateOrCreate(['name' => $name], ['name' => $name]);
                 $company->tags()->attach($tag);
+            }
+
+            logger(json_encode($validated['apps']));
+
+            if (isset($validated['apps'])) {
+                $company->apps()->delete();
+                foreach ($validated['apps'] as $app) {
+                    if (!isset($app['name']) || !isset($app['value'])) continue;
+
+                    CompanyApp::updateOrCreate([
+                        'company_id' => $company->id,
+                        'app_id' => $app['name'],
+                    ],[
+                        'company_id' => $company->id,
+                        'app_id' => $app['name'],
+                        'url' => $app['value'],
+                    ]);
+                }
             }
 
             DB::commit();

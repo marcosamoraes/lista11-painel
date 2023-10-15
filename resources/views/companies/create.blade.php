@@ -363,6 +363,54 @@
                 </div>
             </div>
 
+
+
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+                <header class="mb-5">
+                    <h2 class="text-lg font-medium">
+                        {{ __('Aplicativos') }}
+                    </h2>
+                </header>
+
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
+                    @for($i = 1; $i <= 5; $i++)
+                        <div class="space-y-2">
+                            <x-form.label for="apps_name{{ $i }}" :value="__('Aplicativo ' . $i)" />
+
+                            <x-form.select
+                                id="apps_name{{ $i }}"
+                                name="apps[{{ $i }}][name]"
+                                type="text"
+                                class="block w-full select2"
+                                autofocus
+                                autocomplete="apps"
+                            >
+                                <option value="">Selecione</option>
+                                @foreach ( $apps as $app )
+                                    <option
+                                        value="{{ $app->id }}"
+                                        {{ $app->id === old('apps.' . $i . '.name') ? 'selected' : false }}
+                                    >
+                                        {{ $app->name }}
+                                    </option>
+                                @endforeach
+                            </x-form.select>
+
+                            <x-form.error :messages="$errors->get('apps.' . $i . '.name')" />
+                        </div>
+
+                        <div class="space-y-2">
+                            <x-form.label for="apps_value{{ $i }}" :value="__('Link do aplicativo ' . $i)" />
+
+                            <x-form.input id="apps_value{{ $i }}" name="apps[{{ $i }}][value]" type="text" class="block w-full"
+                                :value="old('apps.' . $i . '.value')" autofocus autocomplete="apps_value{{ $i }}" />
+
+                            <x-form.error :messages="$errors->get('apps.' . $i . '.value')" />
+                        </div>
+                    @endfor
+                </div>
+            </div>
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
                 <header class="mb-5">
                     <h2 class="text-lg font-medium">

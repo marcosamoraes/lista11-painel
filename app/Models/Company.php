@@ -188,4 +188,12 @@ class Company extends Model
     {
         return $this->belongsToMany(App::class, 'company_apps');
     }
+
+    /**
+     * Get the company apps for the company.
+     */
+    public function companyApps()
+    {
+        return $this->hasMany(CompanyApp::class);
+    }
 }

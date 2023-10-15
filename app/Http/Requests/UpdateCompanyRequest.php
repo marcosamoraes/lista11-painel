@@ -69,6 +69,10 @@ class UpdateCompanyRequest extends FormRequest
 
             'tags' => 'nullable|array',
             'tags.*' => 'nullable|string',
+
+            'apps' => 'nullable|array',
+            'apps.*.name' => 'nullable|exists:apps,id',
+            'apps.*.value' => 'nullable|string|max:255',
         ];
     }
 }

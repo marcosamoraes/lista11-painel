@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use App\Models\Tag;
 use Buglinjo\LaravelWebp\Webp;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -37,6 +39,8 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         try {
+            DB::beginTransaction();
+
             $validated = $request->validated();
 
             $webp = Webp::make($validated['image']);
@@ -50,10 +54,19 @@ class PostController extends Controller
                 $validated['image'] = $fileName;
             }
 
-            Post::create($validated);
+            $post = Post::create($validated);
+
+            foreach ($validated['tags'] as $name) {
+                $tag = Tag::updateOrCreate(['name' => $name], ['name' => $name]);
+                $post->tags()->attach($tag);
+            }
+
+            DB::commit();
+
             Alert::toast('Post cadastrado com sucesso.', 'success');
             return Redirect::route('posts.index');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
             Alert::toast('Falha ao cadastrar post.', 'error');
             return back()->withInput();
@@ -74,6 +87,8 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, Post $post)
     {
         try {
+            DB::beginTransaction();
+
             $validated = $request->validated();
 
             if (isset($validated['image'])) {
@@ -94,9 +109,19 @@ class PostController extends Controller
             }
 
             $post->update($validated);
+
+            $post->tags()->detach();
+            foreach ($validated['tags'] as $name) {
+                $tag = Tag::updateOrCreate(['name' => $name], ['name' => $name]);
+                $post->tags()->attach($tag);
+            }
+
+            DB::commit();
+
             Alert::toast('Post editado com sucesso.', 'success');
             return Redirect::route('posts.index');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
             Alert::toast('Falha ao editar post.', 'error');
             return back()->withInput();

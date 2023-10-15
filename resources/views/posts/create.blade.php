@@ -80,6 +80,15 @@
                     </div>
 
                     <div class="space-y-2">
+                        <x-form.label for="tags" :value="__('Tags')" />
+
+                        <x-form.input id="tags" name="tags" type="text" class="block w-full" :value="old('tags', $company->tags->pluck('name')->join(','))"
+                            autofocus autocomplete="tags" placeholder="Separe as tags por vírgula" />
+
+                        <x-form.error :messages="$errors->get('tags')" />
+                    </div>
+
+                    <div class="space-y-2">
                         <x-form.label
                             for="active"
                             :value="__('Status *')"

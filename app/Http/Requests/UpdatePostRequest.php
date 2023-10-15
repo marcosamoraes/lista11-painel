@@ -15,6 +15,16 @@ class UpdatePostRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'tags' => explode(',', $this->tags),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
@@ -26,6 +36,9 @@ class UpdatePostRequest extends FormRequest
             'image' => 'nullable|file',
             'content' => 'required|string',
             'active' => 'required|boolean',
+
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string',
         ];
     }
 }
