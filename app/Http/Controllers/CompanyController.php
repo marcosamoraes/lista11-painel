@@ -106,7 +106,9 @@ class CompanyController extends Controller
             }
         })->get();
         $categories = Category::all();
-        return view('companies.create', compact('clients', 'categories'));
+
+        $openingHours = "Segunda-feira: 08h às 18h\nTerça-feira: 08h às 18h\nQuarta-feira: 08h às 18h\nQuinta-feira: 08h às 18h\nSexta-feira: 08h às 18h\nSábado: Fechado\nDomingo e Feriado: Fechado";
+        return view('companies.create', compact('clients', 'categories', 'openingHours'));
     }
 
     /**

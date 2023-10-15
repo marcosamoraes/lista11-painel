@@ -178,7 +178,7 @@
                             name="opening_hours"
                             type="text"
                             class="block w-full"
-                            :value="old('opening_hours')"
+                            :value="old('opening_hours', $openingHours)"
                             autofocus
                             autocomplete="opening_hours"
                         ></x-form.textarea>
@@ -327,39 +327,38 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="ifood" :value="__('Ifood')" />
+                        <x-form.label for="video_link" :value="__('Link do Vídeo')" />
 
-                        <x-form.input id="ifood" name="ifood" type="text" class="block w-full"
-                            :value="old('ifood')" autofocus autocomplete="ifood" />
+                        <x-form.input id="video_link" name="video_link" type="text" class="block w-full"
+                            :value="old('video_link')" autofocus autocomplete="video_link" />
 
-                        <x-form.error :messages="$errors->get('ifood')" />
+                        <x-form.error :messages="$errors->get('video_link')" />
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="waze" :value="__('Waze')" />
+                        <x-form.label for="photo_360_link" :value="__('Link da foto 360º')" />
 
-                        <x-form.input id="waze" name="waze" type="text" class="block w-full"
-                            :value="old('waze')" autofocus autocomplete="waze" />
+                        <x-form.input id="photo_360_link" name="photo_360_link" type="text" class="block w-full"
+                            :value="old('photo_360_link')" autofocus autocomplete="photo_360_link" placeholder="Cole aqui o LINK gerado pelo Google Maps" />
 
-                        <x-form.error :messages="$errors->get('waze')" />
+                        <x-form.error :messages="$errors->get('photo_360_link')" />
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="olx" :value="__('OLX')" />
+                        <x-form.label for="photo_360_code" :value="__('Código da foto 360º')" />
 
-                        <x-form.input id="olx" name="olx" type="text" class="block w-full"
-                            :value="old('olx')" autofocus autocomplete="olx" />
+                        <x-form.textarea
+                            id="photo_360_code"
+                            name="photo_360_code"
+                            type="text"
+                            class="block w-full"
+                            :value="old('photo_360_code')"
+                            autofocus
+                            autocomplete="photo_360_code"
+                            placeholder="Cole aqui o LINK gerado pelo Google Maps"
+                        ></x-form.textarea>
 
-                        <x-form.error :messages="$errors->get('olx')" />
-                    </div>
-
-                    <div class="space-y-2">
-                        <x-form.label for="google_street_view" :value="__('Google Street View')" />
-
-                        <x-form.input id="google_street_view" name="google_street_view" type="text" class="block w-full"
-                            :value="old('google_street_view')" autofocus autocomplete="google_street_view" />
-
-                        <x-form.error :messages="$errors->get('google_street_view')" />
+                        <x-form.error :messages="$errors->get('photo_360_code')" />
                     </div>
                 </div>
             </div>
