@@ -269,7 +269,7 @@ class CompanyController extends Controller
             logger(json_encode($validated['apps']));
 
             if (isset($validated['apps'])) {
-                $company->apps()->delete();
+                $company->companyApps()->delete();
                 foreach ($validated['apps'] as $app) {
                     if (!isset($app['name']) || !isset($app['value'])) continue;
 

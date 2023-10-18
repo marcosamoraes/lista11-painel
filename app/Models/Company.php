@@ -70,6 +70,7 @@ class Company extends Model
     protected $appends = [
         'image_url',
         'images_url',
+        'full_address',
         'is_approved',
         'rating'
     ];
@@ -95,6 +96,11 @@ class Company extends Model
     protected function imagesUrl(): Attribute
     {
         return Attribute::get(fn () => $this->images ? collect($this->images)->map(fn ($image) => asset('storage/' . $image)) : null);
+    }
+
+    protected function fullAddress(): Attribute
+    {
+        return Attribute::get(fn () => $this->address . ', ' . $this->number . ' - ' . $this->neighborhood . ', ' . $this->city . ' - ' . $this->state . ', ' . $this->cep);
     }
 
     /**
