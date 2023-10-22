@@ -17,7 +17,7 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imageViewer()">
                     <div class="space-y-2">
-                        <x-form.label for="image" :value="__('Imagem')" />
+                        <x-form.label for="image" :value="__('Imagem (100x100px)')" />
                         <x-form.input-file id="image" name="image" :value="old('image')" autofocus autocomplete="image" @change="fileChosen" />
                         <x-form.error :messages="$errors->get('image')" />
                     </div>

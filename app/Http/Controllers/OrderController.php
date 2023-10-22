@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderExport;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -271,5 +273,13 @@ class OrderController extends Controller
 
         Alert::toast('Contrato assinado com sucesso.', 'success');
         return Redirect::route('companies.index');
+    }
+
+    /**
+     * Export the resources from storage to xlsx.
+     */
+    public function export()
+    {
+        return Excel::download(new OrderExport, 'vendas.xlsx');
     }
 }

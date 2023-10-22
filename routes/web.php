@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/companies/export', [CompanyController::class, 'export'])->name('companies.export');
     Route::resource('companies', CompanyController::class);
     Route::resource('contacts', ContactController::class)->only(['index', 'destroy']);
 
@@ -60,7 +61,9 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     });
 
     Route::middleware("role:{$admin}|{$seller}")->group(function () {
+        Route::get('/clients/export', [ClientController::class, 'export'])->name('clients.export');
         Route::resource('clients', ClientController::class);
+        Route::get('/orders/export', [OrderController::class, 'export'])->name('orders.export');
         Route::resource('orders', OrderController::class)->except(['destroy']);
         Route::get('orders/{order}/payment/generate', [OrderController::class, 'generatePaymentLink'])->name('orders.payment.generate');
     });

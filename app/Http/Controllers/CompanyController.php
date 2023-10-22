@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CompanyExport;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
 {
@@ -304,5 +306,13 @@ class CompanyController extends Controller
         $company->delete();
         Alert::toast('Empresa deletada com sucesso.', 'success');
         return back();
+    }
+
+    /**
+     * Export the resources from storage to xlsx.
+     */
+    public function export()
+    {
+        return Excel::download(new CompanyExport, 'empresas.xlsx');
     }
 }

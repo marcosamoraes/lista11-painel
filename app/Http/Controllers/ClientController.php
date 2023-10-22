@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ClientExport;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClientController extends Controller
 {
@@ -153,5 +155,13 @@ class ClientController extends Controller
             Alert::toast('Falha ao editar dados.', 'error');
             return back()->withInput();
         }
+    }
+
+    /**
+     * Export the resources from storage to xlsx.
+     */
+    public function export()
+    {
+        return Excel::download(new ClientExport, 'clientes.xlsx');
     }
 }

@@ -190,6 +190,10 @@ $(document).ready(function() {
         placeholder: "Selecione...",
         allowClear: true
     });
+
+    $('.toggle-filters').click(function() {
+        $('.filters').slideToggle();
+    });
 });
 
 window.Chart = Chart;

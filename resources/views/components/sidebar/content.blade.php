@@ -4,7 +4,7 @@
     class="flex flex-col flex-1 gap-4 px-3"
 >
     <x-sidebar.link
-        title="Dashboard"
+        title="Painel"
         href="{{ route('dashboard') }}"
         :isActive="request()->routeIs('dashboard')"
     >
@@ -14,72 +14,51 @@
     </x-sidebar.link>
 
     @if (auth()->user()->role === 'admin')
-        <x-sidebar.link
-            title="Vendedores"
-            href="{{ route('sellers.index') }}"
-            :isActive="request()->routeIs('sellers.*')"
+        <x-sidebar.dropdown
+            title="Comercial"
+            :active="request()->routeIs('sellers.*') ||
+            request()->routeIs('clients.*') ||
+            request()->routeIs('companies.*') ||
+            request()->routeIs('orders.*')"
         >
             <x-slot name="icon">
-                <i class="fa fa-users-gear" aria-hidden="true"></i>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             </x-slot>
-        </x-sidebar.link>
 
-        <x-sidebar.link
-            title="Clientes"
-            href="{{ route('clients.index') }}"
-            :isActive="request()->routeIs('clients.*')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-users" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
+            <x-sidebar.sublink
+                title="Vendedores"
+                href="{{ route('sellers.index') }}"
+                :isActive="request()->routeIs('sellers.*')"
+            />
 
-        <x-sidebar.link
-            title="Empresas"
-            href="{{ route('companies.index') }}"
-            :isActive="request()->routeIs('companies.*')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-building" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
+            <x-sidebar.sublink
+                title="Clientes"
+                href="{{ route('clients.index') }}"
+                :isActive="request()->routeIs('clients.*')"
+            />
 
-        <x-sidebar.link
-            title="Vendas"
-            href="{{ route('orders.index') }}"
-            :isActive="request()->routeIs('orders.*')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-cart-shopping" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
+            <x-sidebar.sublink
+                title="Empresas"
+                href="{{ route('companies.index') }}"
+                :isActive="request()->routeIs('companies.*')"
+            />
 
-        <x-sidebar.link
-            title="Avaliações"
-            href="{{ route('reviews.index') }}"
-            :isActive="request()->routeIs('reviews.*')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-star" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
-
-        <x-sidebar.link
-            title="Posts"
-            href="{{ route('posts.index') }}"
-            :isActive="request()->routeIs('posts.*')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-blog" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
+            <x-sidebar.sublink
+                title="Vendas"
+                href="{{ route('orders.index') }}"
+                :isActive="request()->routeIs('orders.*')"
+            />
+        </x-sidebar.dropdown>
 
         <x-sidebar.dropdown
-            title="Leads"
-            :active="request()->routeIs('contacts.*') || request()->routeIs('registers.*')"
+            title="Comunicação"
+            :active="request()->routeIs('contacts.*') ||
+            request()->routeIs('registers.*') ||
+            request()->routeIs('reviews.*') ||
+            request()->routeIs('posts.*')"
         >
             <x-slot name="icon">
-                <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                <i class="fa fa-comments" aria-hidden="true"></i>
             </x-slot>
 
             <x-sidebar.sublink
@@ -93,10 +72,21 @@
                 href="{{ route('registers.index') }}"
                 :isActive="request()->routeIs('registers.*')"
             />
+            <x-sidebar.sublink
+                title="Avaliações"
+                href="{{ route('reviews.index') }}"
+                :isActive="request()->routeIs('reviews.*')"
+            />
+
+            <x-sidebar.sublink
+                title="Blog"
+                href="{{ route('posts.index') }}"
+                :isActive="request()->routeIs('posts.*')"
+            />
         </x-sidebar.dropdown>
 
         <x-sidebar.dropdown
-            title="Configurações"
+            title="Administração"
             :active="request()->routeIs('contracts.*') ||
             request()->routeIs('packs.*') ||
             request()->routeIs('categories.*') ||
@@ -104,7 +94,7 @@
             request()->routeIs('apps.*')"
         >
             <x-slot name="icon">
-                <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+                <i class="fa fa-cog" aria-hidden="true"></i>
             </x-slot>
 
             <x-sidebar.sublink
@@ -132,7 +122,7 @@
             />
 
             <x-sidebar.sublink
-                title="Aplications"
+                title="Aplicativos"
                 href="{{ route('apps.index') }}"
                 :isActive="request()->routeIs('apps.*')"
             />

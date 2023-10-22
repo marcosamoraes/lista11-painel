@@ -3,7 +3,12 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             Clientes
         </h2>
-        <a href="{{ route('clients.create') }}"><x-button>Cadastrar</x-button></a>
+        <div>
+            @if (auth()->user()->role === 'admin')
+                <x-button href="{{ route('clients.export') }}" variant="secondary">Exportar</x-button>
+            @endif
+            <x-button href="{{ route('clients.create') }}">Cadastrar</x-button>
+        </div>
     </x-slot>
 
     <x-search-bar />
@@ -17,32 +22,9 @@
                             <thead>
                             <tr>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">ID</span>
-                                </th>
-                                @if (auth()->user()->role === 'admin')
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vendedor</span>
-                                    </th>
-                                @endif
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Nome</span>
                                 </th>
                                 @if (auth()->user()->role === 'admin')
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">E-mail</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">CPF/CNPJ</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Telefone</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
-                                    </th>
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                         <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Ações</span>
                                     </th>
@@ -53,39 +35,26 @@
                             <tbody class="bg-white dark:bg-dark-eval-1 divide-y divide-gray-200 divide-solid">
                             @foreach($clients as $client)
                                 <tr class="bg-white dark:bg-dark-eval-1">
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->id }}
-                                    </td>
-                                    @if (auth()->user()->role === 'admin')
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $client->seller?->name ?? 'Sem vendedor' }}
-                                        </td>
-                                    @endif
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->user->name }}
-                                    </td>
-                                    @if (auth()->user()->role === 'admin')
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $client->user->email }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $client->cpf_cnpj }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $client->phone }}<br />
-                                            {{ $client->phone2 }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                    <td
+                                        class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
+                                        <div class="flex gap-3 items-center">
                                             @if ($client->user->status)
-                                                <span class="text-green-500">Ativo</span>
+                                                <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
                                             @else
-                                                <span class="text-red-500">Inativo</span>
+                                                <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
                                             @endif
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                            {{ $client->created_at?->format('d/m/Y H:i:s') }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            <p>
+                                                {{ $client->user->name }}<br />
+                                                @if (auth()->user()->role === 'admin')
+                                                    <small>{{ $client->user->email }}</small><br />
+                                                    <small>Vendedor: {{ $client->seller?->name ?? 'Sem vendedor' }}</small><br />
+                                                @endif
+                                                <small>{{ $client->phone }}</small>
+                                            </p>
+                                        </div>
+                                    </td>
+                                    @if (auth()->user()->role === 'admin')
+                                        <td class="px-6 py-4 whitespace-no-wrap flex-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
                                             <a href="https://wa.me/+55{{ preg_replace('/\D/', '', $client->phone) }}" target="_blank">
                                                 <x-button variant="whatsapp" title="Whatsapp">
                                                     <i class="fab fa-whatsapp"></i>

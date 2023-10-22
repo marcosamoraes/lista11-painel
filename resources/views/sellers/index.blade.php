@@ -20,32 +20,7 @@
                                 <tr>
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                         <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">ID</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                        <span
                                             class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Nome</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">E-mail</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">CPF/RG</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Telefone</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                        <span
-                                            class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data
-                                            de criação</span>
                                     </th>
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                         <span
@@ -59,39 +34,20 @@
                                     <tr class="bg-white dark:bg-dark-eval-1">
                                         <td
                                             class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->id }}
+                                            <div class="flex gap-3 items-center">
+                                                @if ($seller->user->status)
+                                                    <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
+                                                @else
+                                                    <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
+                                                @endif
+                                                <p>
+                                                    {{ $seller->user->name }}<br />
+                                                    <small>{{ $seller->phone }}</small>
+                                                </p>
+                                            </div>
                                         </td>
                                         <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->user->name }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->user->email }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->cpf }}<br />
-                                            {{ $seller->rg }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->phone }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                            @if ($seller->user->status)
-                                                <span class="text-green-500">Ativo</span>
-                                            @else
-                                                <span class="text-red-500">Inativo</span>
-                                            @endif
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                            {{ $seller->created_at?->format('d/m/Y H:i:s') }}
-                                        </td>
-                                        <td
-                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            class="px-6 py-4 whitespace-no-wrap text-sm leading-5 flex-wrap text-gray-900 dark:text-white flex gap-3">
                                             <a href="{{ route('sellers.edit', $seller->id) }}">
                                                 <x-button variant="warning">
                                                     <i class="fas fa-edit"></i>

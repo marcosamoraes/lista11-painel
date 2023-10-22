@@ -10,6 +10,7 @@
             <form
                 method="post"
                 action="{{ route('contracts.store') }}"
+                id="contractForm"
             >
                 @csrf
 

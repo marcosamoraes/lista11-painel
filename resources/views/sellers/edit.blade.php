@@ -17,6 +17,68 @@
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
+                            for="id"
+                            :value="__('ID')"
+                        />
+
+                        <x-form.input
+                            id="id"
+                            name="id"
+                            type="text"
+                            class="block w-full"
+                            :value="old('id', $seller->id)"
+                            autofocus
+                            disabled
+                            readonly
+                        />
+
+                        <x-form.error :messages="$errors->get('id')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label
+                            for="created_at"
+                            :value="__('Cadastrado em')"
+                        />
+
+                        <x-form.input
+                            id="created_at"
+                            name="created_at"
+                            type="text"
+                            class="block w-full"
+                            :value="old('created_at', $seller->created_at->format('d/m/Y H:i:s'))"
+                            autofocus
+                            disabled
+                            readonly
+                        />
+
+                        <x-form.error :messages="$errors->get('created_at')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label
+                            for="updated_at"
+                            :value="__('Atualizado em')"
+                        />
+
+                        <x-form.input
+                            id="updated_at"
+                            name="updated_at"
+                            type="text"
+                            class="block w-full"
+                            :value="old('updated_at', $seller->updated_at->format('d/m/Y H:i:s'))"
+                            autofocus
+                            disabled
+                            readonly
+                        />
+
+                        <x-form.error :messages="$errors->get('updated_at')" />
+                    </div>
+                </div>
+
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
+                    <div class="space-y-2">
+                        <x-form.label
                             for="name"
                             :value="__('Nome *')"
                         />
@@ -118,7 +180,7 @@
                             name="seller[birth_date]"
                             type="text"
                             class="block w-full"
-                            :value="old('seller.birth_date', $seller->birth_date->format('d/m/Y'))"
+                            :value="old('seller.birth_date', $seller->birth_date ? $seller->birth_date->format('d/m/Y') : null)"
                             x-mask="99/99/9999"
                             autofocus
                             autocomplete="seller[birth_date]"
