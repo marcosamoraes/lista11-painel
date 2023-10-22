@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Seller;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -85,15 +86,41 @@ class DashboardController extends Controller
         $companiesPerCityLabels = $companiesPerCity->map(fn ($item) => "&quot;{$item->city}&quot;")->join(',');
         $companiesPerCityValues = $companiesPerCity->map(fn ($item) => $item->total)->join(',');
 
+        $paymentMethods = Order::selectRaw('count(*) as total, payment_method')
+            ->where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->where('status', OrderStatusEnum::Approved)
+            ->groupBy('payment_method')
+            ->orderBy('payment_method', 'asc')
+            ->get();
+
+        $paymentMethodsLabels = $paymentMethods->map(fn ($item) => "&quot;{$item->payment_method}&quot;")->join(',');
+        $paymentMethodsValues = $paymentMethods->map(fn ($item) => $item->total)->join(',');
+
+        $percentSalesPerSeller = User::selectRaw("count(*) as total, name")
+            ->join('orders', 'user_id', '=', 'users.id')
+            ->where('orders.created_at', '>=', $initialDate)
+            ->where('orders.created_at', '<=', $finalDate)
+            ->where('orders.status', OrderStatusEnum::Approved)
+            ->groupBy('name')
+            ->orderBy('name', 'asc')
+            ->get();
+
+        $percentSalesPerSellerLabels = $percentSalesPerSeller->map(fn ($item) => "&quot;{$item->name}&quot;")->join(',');
+        $percentSalesPerSellerValues = $percentSalesPerSeller->map(fn ($item) => $item->total)->join(',');
+
         return view('dashboard', compact(
             'countClients',
             'countActiveCompanies',
             'countInactiveCompanies',
             'countSellers',
             'sumOrdersTotal',
-            'companiesPerCity',
             'companiesPerCityLabels',
             'companiesPerCityValues',
+            'paymentMethodsLabels',
+            'paymentMethodsValues',
+            'percentSalesPerSellerLabels',
+            'percentSalesPerSellerValues',
             'countContacts',
             'countRegisters',
         ));
