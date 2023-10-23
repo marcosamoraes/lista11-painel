@@ -4,20 +4,20 @@
             Empresas
         </h2>
 
-        <div>
+        <div class="flex justify-end gap-3 flex-wrap flex-col-reverse sm:flex-row">
             @if (auth()->user()->role === 'admin')
-                <x-button href="{{ route('companies.export') }}" variant="secondary">Exportar</x-button>
+                <x-button href="{{ route('companies.export') }}" variant="secondary"><i class="fa fa-file-excel mr-2"></i>Exportar</x-button>
             @endif
-            <x-button variant="black" class="toggle-filters">Exibir Filtros</x-button>
+            <x-button variant="black" class="toggle-filters"><i class="fa fa-filter mr-2"></i>Filtros</x-button>
             @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
-                <x-button href="{{ route('companies.create') }}">Cadastrar</x-button>
+                <x-button href="{{ route('companies.create') }}"><i class="fa fa-plus mr-2"></i>Cadastrar</x-button>
             @endif
         </div>
     </x-slot>
 
-    <div class="filters" style="display: none">
-        <x-search-bar />
+    <x-search-bar />
 
+    <div class="filters" style="display: none">
         <div class="max-w-10xl sm:px-6 lg:px-8 mt-5">
             <div class="flex justify-between">
                 <form method="GET" class="flex flex-wrap gap-3 w-full">

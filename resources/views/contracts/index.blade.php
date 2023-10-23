@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             Contratos
         </h2>
-        <a href="{{ route('contracts.create') }}"><x-button>Cadastrar</x-button></a>
+        <a href="{{ route('contracts.create') }}"><x-button><i class="fa fa-plus mr-2"></i>Cadastrar</x-button></a>
     </x-slot>
 
     <x-search-bar />

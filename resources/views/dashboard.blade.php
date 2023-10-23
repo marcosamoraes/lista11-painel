@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-end w-full">
             <h2 class="text-xl font-semibold leading-tight">
-                <x-button variant="black" class="toggle-filters">Exibir Filtros</x-button>
+                <x-button variant="black" class="toggle-filters"><i class="fa fa-filter mr-2"></i>Filtros</x-button>
             </h2>
         </div>
     </x-slot>
@@ -42,11 +42,11 @@
                         <div class="w-full"></div>
                     @endif
                     @if (auth()->user()->role === 'admin')
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/clients">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
@@ -63,11 +63,11 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/companies?status=1">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
@@ -75,8 +75,17 @@
                                                     <i class="fa fa-building"></i>
                                                 </div>
                                                 <div class="text-center">
-                                                    <h5 class="text-black uppercase font-bold text-xs h-[30px]">Empresas Ativas</h5>
-                                                    <span class="font-semibold text-xl text-black">{{ $countActiveCompanies }}</span>
+                                                    <h5 class="text-black uppercase font-bold text-xs h-[30px]">Empresas</h5>
+                                                    <div class="flex justify-between items-center">
+                                                        <span class="font-semibold text-xl text-black flex items-center gap-2">
+                                                            <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
+                                                            {{ $countActiveCompanies }}
+                                                        </span>
+                                                        <span class="font-semibold text-xl text-black flex items-center gap-2">
+                                                            <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
+                                                            {{ $countInactiveCompanies }}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,16 +93,16 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/sellers">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
                                                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                                                    <i class="fa fa-building"></i>
+                                                    <i class="fa fa-user"></i>
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Vendedores</h5>
@@ -105,16 +114,16 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/orders">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
-                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                                                    <i class="fa fa-building"></i>
+                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-yellow-500">
+                                                    <i class="fa fa-shopping-cart"></i>
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Vendas</h5>
@@ -126,16 +135,16 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/contacts">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
                                                     class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-blue-500">
-                                                    <i class="fa fa-file"></i>
+                                                    <i class="fa fa-address-book"></i>
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Contatos</h5>
@@ -147,11 +156,11 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-full sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 px-4 flex justify-center items-center">
                             <a href="/registers">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-4">
+                                    <div class="flex-auto p-2">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
@@ -159,7 +168,7 @@
                                                     <i class="fa fa-file"></i>
                                                 </div>
                                                 <div class="text-center">
-                                                    <h5 class="text-black uppercase font-bold text-xs h-[30px]">Interessados (Leads)</h5>
+                                                    <h5 class="text-black uppercase font-bold text-xs h-[30px]">Interessados</h5>
                                                     <span class="font-semibold text-xl text-black">{{ $countRegisters }}</span>
                                                 </div>
                                             </div>
@@ -175,7 +184,7 @@
                                 <div class="flex-auto p-4">
                                     <div class="flex flex-wrap">
                                         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                            <h5 class="text-black uppercase font-bold text-xs">Estabelecimentos por cidade</h5>
+                                            <h5 class="text-black uppercase font-bold text-xs">Empresas por cidade</h5>
                                             <div id="chart-container" class="mt-3">
                                                 <canvas class="chart" data-type="pie"
                                                     data-labels="[{!! $companiesPerCityLabels !!}]"
@@ -211,7 +220,7 @@
                                 <div class="flex-auto p-4">
                                     <div class="flex flex-wrap">
                                         <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                            <h5 class="text-black uppercase font-bold text-xs">Qtd de vendas por vendedor</h5>
+                                            <h5 class="text-black uppercase font-bold text-xs">Vendas por vendedor</h5>
                                             <div id="chart-container" class="mt-3">
                                                 <canvas class="chart" data-type="pie"
                                                     data-labels="[{!! $percentSalesPerSellerLabels !!}]"

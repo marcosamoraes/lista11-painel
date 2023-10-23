@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             Banners
         </h2>
-        <a href="{{ route('banners.create') }}"><x-button>Cadastrar</x-button></a>
+        <a href="{{ route('banners.create') }}"><x-button><i class="fa fa-plus mr-2"></i>Cadastrar</x-button></a>
     </x-slot>
 
     <div class="py-12">

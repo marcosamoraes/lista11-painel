@@ -11,6 +11,7 @@
                 method="post"
                 action="{{ route('posts.update', $post->id) }}"
                 enctype="multipart/form-data"
+                id="postForm"
             >
                 @csrf
                 @method('PUT')
@@ -40,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
                             for="title"
@@ -59,26 +60,6 @@
                         />
 
                         <x-form.error :messages="$errors->get('title')" />
-                    </div>
-
-                    <div class="space-y-2">
-                        <x-form.label
-                            for="content"
-                            :value="__('Conteúdo')"
-                        />
-
-                        <x-form.textarea
-                            id="content"
-                            name="content"
-                            type="text"
-                            class="block w-full"
-                            :value="old('content', $post->content)"
-                            autofocus
-                            autocomplete="content"
-                            required
-                        ></x-form.textarea>
-
-                        <x-form.error :messages="$errors->get('content')" />
                     </div>
 
                     <div class="space-y-2">
@@ -101,6 +82,22 @@
                     </div>
                 </div>
 
+                <div class="mb-5 grid grid-cols-1 gap-y-6 gap-x-4">
+                    <div class="space-y-2">
+                        <x-form.label
+                            for="content"
+                            :value="__('Conteúdo')"
+                        />
+
+                        <div id="editor" style="height: 300px">
+                            {!! old('content', $post->content) !!}
+                        </div>
+                        <input type="hidden" id="content" name="content">
+
+                        <x-form.error :messages="$errors->get('content')" />
+                    </div>
+                </div>
+
                 <div class="flex items-center gap-4">
                     <x-button>
                         {{ __('Save') }}
@@ -110,3 +107,17 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    var form = document.getElementById('postForm');
+    var contentInput = document.getElementById('content');
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        contentInput.value = quill.root.innerHTML;
+        form.submit();
+    });
+</script>

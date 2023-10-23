@@ -3,11 +3,11 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             Clientes
         </h2>
-        <div>
+        <div class="flex justify-end gap-3 flex-wrap flex-col-reverse sm:flex-row">
             @if (auth()->user()->role === 'admin')
-                <x-button href="{{ route('clients.export') }}" variant="secondary">Exportar</x-button>
+                <x-button href="{{ route('clients.export') }}" variant="secondary"><i class="fa fa-file-excel mr-2"></i>Exportar</x-button>
             @endif
-            <x-button href="{{ route('clients.create') }}">Cadastrar</x-button>
+            <x-button href="{{ route('clients.create') }}"><i class="fa fa-plus mr-2"></i>Cadastrar</x-button>
         </div>
     </x-slot>
 
