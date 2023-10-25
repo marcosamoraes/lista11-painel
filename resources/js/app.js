@@ -5,6 +5,7 @@ import collapse from '@alpinejs/collapse'
 import PerfectScrollbar from 'perfect-scrollbar'
 import mask from '@alpinejs/mask'
 import Chart from 'chart.js/auto'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 Alpine.plugin(mask)
 
@@ -219,12 +220,35 @@ $(document).ready(function() {
 
 window.Chart = Chart;
 
+Chart.register(ChartDataLabels)
+
 $(".chart").each(function () {
     let type = $(this).data("type");
     let labels = $(this).data("labels");
     let series = $(this).data("series");
     let options = $(this).data("options");
     let ctx = this.getContext("2d");
+
+    options = {
+        tooltips: {
+            enabled: false
+        },
+        plugins: {
+            datalabels: {
+                formatter: (value, ctx) => {
+                    let sum = 0;
+                    let dataArr = ctx.chart.data.datasets[0].data;
+                    dataArr.map(data => {
+                        sum += data;
+                    });
+                    let percentage = (value*100 / sum).toFixed(2)+"%";
+                    return percentage;
+                },
+                color: '#fff',
+            }
+        },
+        ...options
+    };
 
     new Chart(ctx, {
         type: type,
