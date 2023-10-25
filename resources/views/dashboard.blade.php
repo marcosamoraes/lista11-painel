@@ -55,7 +55,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Clientes</h5>
-                                                    <span class="font-semibold text-xl text-black">{{ $countClients }}</span>
+                                                    <span class="font-semibold text-sm text-black">{{ $countClients }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -77,11 +77,11 @@
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Empresas</h5>
                                                     <div class="flex justify-between items-center">
-                                                        <span class="font-semibold text-xl text-black flex items-center gap-2">
+                                                        <span class="font-semibold text-sm text-black flex items-center gap-2">
                                                             <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
                                                             {{ $countActiveCompanies }}
                                                         </span>
-                                                        <span class="font-semibold text-xl text-black flex items-center gap-2">
+                                                        <span class="font-semibold text-sm text-black flex items-center gap-2">
                                                             <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
                                                             {{ $countInactiveCompanies }}
                                                         </span>
@@ -106,7 +106,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Vendedores</h5>
-                                                    <span class="font-semibold text-xl text-black">{{ $countSellers }}</span>
+                                                    <span class="font-semibold text-sm text-black">{{ $countSellers }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Vendas</h5>
-                                                    <span class="font-semibold text-xl text-black">R$ {{ number_format($sumOrdersTotal, 2, ',', '.') }}</span>
+                                                    <span class="font-semibold text-sm text-black">R$ {{ number_format($sumOrdersTotal, 2, ',', '.') }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Contatos</h5>
-                                                    <span class="font-semibold text-xl text-black">{{ $countContacts }}</span>
+                                                    <span class="font-semibold text-sm text-black">{{ $countContacts }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,7 +169,7 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <h5 class="text-black uppercase font-bold text-xs h-[30px]">Interessados</h5>
-                                                    <span class="font-semibold text-xl text-black">{{ $countRegisters }}</span>
+                                                    <span class="font-semibold text-sm text-black">{{ $countRegisters }}</span>
                                                 </div>
                                             </div>
                                         </div>
