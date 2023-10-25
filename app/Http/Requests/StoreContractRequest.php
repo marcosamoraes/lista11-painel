@@ -23,6 +23,7 @@ class StoreContractRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'contractor' => 'nullable|string|max:255',
             'description' => 'required|string',
             'status' => 'nullable|boolean',
         ];

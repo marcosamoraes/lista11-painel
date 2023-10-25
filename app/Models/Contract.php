@@ -12,6 +12,7 @@ class Contract extends Model
 
     protected $fillable = [
         'name',
+        'contractor',
         'description',
         'status',
     ];

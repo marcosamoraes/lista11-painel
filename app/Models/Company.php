@@ -46,6 +46,7 @@ class Company extends Model
         'payment_methods',
         'image',
         'images',
+        'banner',
         'featured',
         'visits',
         'status',
@@ -69,6 +70,7 @@ class Company extends Model
      */
     protected $appends = [
         'image_url',
+        'banner_url',
         'images_url',
         'full_address',
         'is_approved',
@@ -91,6 +93,11 @@ class Company extends Model
     protected function imageUrl(): Attribute
     {
         return Attribute::get(fn () => $this->image ? asset('storage/' . $this->image) : null);
+    }
+
+    protected function bannerUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->banner ? asset('storage/' . $this->banner) : null);
     }
 
     protected function imagesUrl(): Attribute

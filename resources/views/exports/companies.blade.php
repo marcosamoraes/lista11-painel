@@ -23,7 +23,7 @@
             <td>{{ $company->user?->name ?? 'Sem vendedor' }}</td>
             <td>{{ $company->client->user->name }}</td>
             <td>{{ $company->name }}</td>
-            <td>{{ $client->user->email }}</td>
+            <td>{{ $company->client->user->email }}</td>
             <td>{{ $company->phone }}</td>
             <td>{{ $company->phone2 }}</td>
             <td>{{ $company->city }}</td>

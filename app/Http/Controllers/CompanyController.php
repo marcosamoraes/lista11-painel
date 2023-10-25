@@ -139,6 +139,19 @@ class CompanyController extends Controller
                 }
             }
 
+            if (isset($validated['banner'])) {
+                $webp = Webp::make($validated['banner']);
+                $fileName = 'companies/' . uniqid() . '.webp';
+
+                if (!file_exists(public_path('storage/companies'))) {
+                    mkdir(public_path('storage/companies'), 0777, true);
+                }
+
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['banner'] = $fileName;
+                }
+            }
+
             if (isset($validated['images']) && count($validated['images']) > 0) {
                 $images = [];
                 foreach ($validated['images'] as $image) {
@@ -235,12 +248,30 @@ class CompanyController extends Controller
                 }
             }
 
-            if (isset($validated['images']) && count($validated['images']) > 0) {
-                foreach ($company->images as $image) {
-                    if (!file_exists('storage/' . $image)) continue;
-                    unlink('storage/' . $image);
+            if (isset($validated['banner'])) {
+                if ($company->banner && file_exists('storage/' . $company->banner)) {
+                    unlink('storage/' . $company->banner);
                 }
 
+                if (!file_exists(public_path('storage/companies'))) {
+                    mkdir(public_path('storage/companies'), 0777, true);
+                }
+
+                $webp = Webp::make($validated['banner']);
+                $fileName = 'companies/' . uniqid() . '.webp';
+
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['banner'] = $fileName;
+                }
+            }
+
+            if (isset($validated['images']) && count($validated['images']) > 0) {
+                if ($company->images) {
+                    foreach ($company->images as $image) {
+                        if (!file_exists('storage/' . $image)) continue;
+                        unlink('storage/' . $image);
+                    }
+                }
                 $images = [];
                 foreach ($validated['images'] as $image) {
                     $webp = Webp::make($image);
@@ -267,8 +298,6 @@ class CompanyController extends Controller
                 $tag = Tag::updateOrCreate(['name' => $name], ['name' => $name]);
                 $company->tags()->attach($tag);
             }
-
-            logger(json_encode($validated['apps']));
 
             if (isset($validated['apps'])) {
                 $company->companyApps()->delete();

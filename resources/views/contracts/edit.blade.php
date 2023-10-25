@@ -15,7 +15,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
                             for="name"
@@ -34,6 +34,26 @@
                         />
 
                         <x-form.error :messages="$errors->get('name')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label
+                            for="contractor"
+                            :value="__('Contratada *')"
+                        />
+
+                        <x-form.input
+                            id="contractor"
+                            name="contractor"
+                            type="text"
+                            class="block w-full"
+                            :value="old('contractor', $contract->contractor)"
+                            required
+                            autofocus
+                            autocomplete="contractor"
+                        />
+
+                        <x-form.error :messages="$errors->get('contractor')" />
                     </div>
 
                     <div class="space-y-2">

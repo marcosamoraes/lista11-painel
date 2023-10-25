@@ -442,6 +442,30 @@
                     </div>
                 </div>
 
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="bannerViewer()">
+                    <div class="space-y-2">
+                        <x-form.label for="banner" :value="__('Banner')" />
+                        <x-form.input-file id="banner" name="banner" :value="old('banner')" autofocus autocomplete="banner" @change="fileChosen" />
+                        <x-form.error :messages="$errors->get('banner')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label for="banner" :value="__('Preview')" />
+                        <template x-if="bannerUrl">
+                            <img :src="bannerUrl"
+                                class="object-cover rounded border border-gray-200"
+                                style="width: 100px; height: 100px;"
+                            >
+                        </template>
+                        <!-- Show the gray box when banner is not available -->
+                        <template x-if="!bannerUrl">
+                            <div
+                                class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
+                            ></div>
+                        </template>
+                    </div>
+                </div>
+
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imagesViewer()">
                     <div class="space-y-2">
                         <x-form.label for="images" :value="__('Outras imagens')" />

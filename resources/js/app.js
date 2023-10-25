@@ -86,6 +86,26 @@ document.addEventListener('alpine:init', () => {
             }
         }
 
+        const bannerViewer = () => {
+            return {
+                bannerUrl: $('[name="banner_url"]').val() || '',
+
+                fileChosen(event) {
+                    this.fileToDataUrl(event, src => this.bannerUrl = src)
+                },
+
+                fileToDataUrl(event, callback) {
+                    if (! event.target.files.length) return
+
+                    let file = event.target.files[0],
+                        reader = new FileReader()
+
+                    reader.readAsDataURL(file)
+                    reader.onload = e => callback(e.target.result)
+                },
+            }
+        }
+
         const imagesViewer = () => {
             return {
                 imagesUrl: $('[name="images_url[]"').val() ? $('[name="images_url[]"').val().split(',') : '',
@@ -144,6 +164,7 @@ document.addEventListener('alpine:init', () => {
             phoneMask,
             cpfCnpjMask,
             imageViewer,
+            bannerViewer,
             imagesViewer,
 
             cep: document.getElementById('cep')?.value || '',

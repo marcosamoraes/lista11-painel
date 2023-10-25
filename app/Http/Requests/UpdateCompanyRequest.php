@@ -60,6 +60,7 @@ class UpdateCompanyRequest extends FormRequest
             'image' => 'nullable|file',
             'images' => 'nullable|array',
             'images.*' => 'nullable|file',
+            'banner' => 'nullable|file',
             'featured' => 'nullable|boolean',
             'status' => 'required|boolean',
             'visits' => 'nullable|integer',

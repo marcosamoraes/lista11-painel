@@ -60,6 +60,7 @@ class StoreCompanyRequest extends FormRequest
             'image' => 'nullable|file',
             'images' => 'nullable|array',
             'images.*' => 'nullable|file',
+            'banner' => 'nullable|file',
             'featured' => 'nullable|boolean',
             'status' => 'nullable|boolean',
 
@@ -71,7 +72,7 @@ class StoreCompanyRequest extends FormRequest
 
             'apps' => 'nullable|array',
             'apps.*.name' => 'nullable|exists:apps,id',
-            'apps.*.value' => 'required_with:apps.*.name|string|max:255',
+            'apps.*.value' => 'nullable|string|max:255',
         ];
     }
 }
