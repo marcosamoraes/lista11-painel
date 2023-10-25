@@ -33,7 +33,7 @@ class SellerCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Sua conta foi criada')
+            ->subject('Seja bem-vindo(a)!')
             ->greeting('Olá ' . $notifiable->name . ',')
             ->line('Sua conta foi criada com sucesso. Aqui estão seus detalhes de login:')
             ->line('Email: ' . $notifiable->email)

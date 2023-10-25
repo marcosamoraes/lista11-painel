@@ -35,7 +35,7 @@ class NewSaleToCompany extends Notification
     {
         //Para ativar a exibição da sua empresa em nosso portal realize o aceite do contrato e pagamento do pacote assinado. %Linkcontrato
         return (new MailMessage)
-            ->subject('Nova compra realizada')
+            ->subject("Finalize sua compra {$this->order->pack->title}!")
             ->greeting('Olá ' . $notifiable->name . ',')
             ->line('Para ativar a exibição da sua empresa em nosso portal, realize o aceite do contrato e pagamento do pacote assinado.')
             ->action('Link do contrato', url("/venda/{$this->order->uuid}/contrato"))

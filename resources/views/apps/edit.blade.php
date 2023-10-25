@@ -43,22 +43,22 @@
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
-                            for="title"
-                            :value="__('Título')"
+                            for="name"
+                            :value="__('Nome')"
                         />
 
                         <x-form.input
-                            id="title"
-                            name="title"
+                            id="name"
+                            name="name"
                             type="text"
                             class="block w-full"
-                            :value="old('title', $app->title)"
+                            :value="old('name', $app->name)"
                             autofocus
-                            autocomplete="title"
+                            autocomplete="name"
                             required
                         />
 
-                        <x-form.error :messages="$errors->get('title')" />
+                        <x-form.error :messages="$errors->get('name')" />
                     </div>
 
                     <div class="space-y-2">
