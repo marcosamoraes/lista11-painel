@@ -125,8 +125,8 @@
                                                 @if (auth()->user()->role === 'admin')
                                                     <small>Vendedor: {{ $company->user?->name ?? 'Sem vendedor' }}</small><br />
                                                 @endif
-                                                @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
-                                                    <small>Cliente: {{ $company->client->user->name }}</small>
+                                                @if ((auth()->user()->role === 'admin' || auth()->user()->role === 'seller') && $company->client)
+                                                    <small>Cliente: {{ $company->client?->user?->name }}</small>
                                                 @endif
                                             </p>
                                         </div>

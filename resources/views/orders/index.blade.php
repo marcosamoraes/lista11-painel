@@ -157,12 +157,14 @@
                                                         </x-button>
                                                     </a>
                                                 @else
-                                                    <a href="https://wa.me/+55{{ preg_replace('/\D/', '', ($order->company->client->phone2 ?? $order->company->client->phone)) }}?text=Link do contrato do Lista11: {{ route('orders.contract', $order->uuid) }}"
-                                                        target="_blank">
-                                                        <x-button variant="whatsapp" title="Link do contrato">
-                                                            <i class="fab fa-whatsapp"></i>
-                                                        </x-button>
-                                                    </a>
+                                                    @if ($order->company->client)
+                                                        <a href="https://wa.me/+55{{ preg_replace('/\D/', '', ($order->company->client->phone2 ?? $order->company->client->phone)) }}?text=Link do contrato do Lista11: {{ route('orders.contract', $order->uuid) }}"
+                                                            target="_blank">
+                                                            <x-button variant="whatsapp" title="Link do contrato">
+                                                                <i class="fab fa-whatsapp"></i>
+                                                            </x-button>
+                                                        </a>
+                                                    @endif
                                                     <a href="{{ route('orders.contract', $order->uuid) }}"
                                                         target="_blank">
                                                         <x-button variant="black" title="Link do contrato">
