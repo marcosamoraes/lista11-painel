@@ -42,7 +42,7 @@
                         <div class="w-full"></div>
                     @endif
                     @if (auth()->user()->role === 'admin')
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/clients">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -63,7 +63,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/companies?status=1">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -93,7 +93,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/companies?initial_expire_at={{ now()->subYear()->format('Y-m-d') }}&final_expire_at={{ now()->format('Y-m-d') }}">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -114,7 +114,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/sellers">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -135,7 +135,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/orders">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -156,7 +156,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/contacts">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -177,7 +177,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-1/12 mb-3 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-3 px-4 flex justify-center items-center">
                             <a href="/registers">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
