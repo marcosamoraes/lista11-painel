@@ -63,7 +63,7 @@ class Order extends Model
     protected function parcelsData(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value ? json_decode($value, true) : [],
+            get: fn (string|null $value) => json_decode($value, true),
             set: fn (string|array $value) => is_array($value) ? json_encode($value) : $value
         );
     }
