@@ -12,6 +12,7 @@ use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -93,7 +94,10 @@ class DashboardController extends Controller
         $companiesPerCityLabels = $companiesPerCity->map(fn ($item) => "&quot;{$item->city}&quot;")->join(',');
         $companiesPerCityValues = $companiesPerCity->map(fn ($item) => $item->total)->join(',');
 
-        $paymentMethods = Order::selectRaw('count(*) as total, payment_method')
+        $paymentMethods = Order::select(
+                DB::raw('count(*) as total'),
+                DB::raw('parcels_data->"$[0].payment_method" as payment_method')
+            )
             ->where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
             ->where('status', OrderStatusEnum::Accomplished)
