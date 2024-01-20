@@ -75,7 +75,7 @@
                 <div class="space-y-2">
                     <x-form.label
                         for="expire_at"
-                        :value="__('Data de Vencimento')"
+                        :value="__('Data de expiração')"
                     />
 
                     <x-form.input
@@ -101,7 +101,16 @@
                     </h2>
                 </header>
 
-                <div class="mb-5 grid grid-cols-1 {{ auth()->user()->role === 'user' ? 'sm:grid-cols-3' : 'sm:grid-cols-4' }} gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
+                    <div class="space-y-2 col-span-3">
+                        <x-form.label for="name" :value="__('Nome *')" />
+
+                        <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name', $company->name)"
+                            required autofocus autocomplete="name" />
+
+                        <x-form.error :messages="$errors->get('name')" />
+                    </div>
+
                     @if (auth()->user()->role !== 'user')
                         <div class="space-y-2">
                             <x-form.label
@@ -130,15 +139,6 @@
                     @endif
 
                     <div class="space-y-2">
-                        <x-form.label for="name" :value="__('Nome *')" />
-
-                        <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name', $company->name)"
-                            required autofocus autocomplete="name" />
-
-                        <x-form.error :messages="$errors->get('name')" />
-                    </div>
-
-                    <div class="space-y-2">
                         <x-form.label for="phone" :value="__('Telefone *')" />
 
                         <x-form.input id="phone" name="phone" type="text" class="block w-full"
@@ -149,19 +149,34 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="phone2" :value="__('Whatsapp')" />
+                        <x-form.label for="phone2" :value="__('Telefone 2')" />
 
                         <x-form.input id="phone2" name="phone2" type="text" class="block w-full"
                             :value="old('phone2', $company->phone2)" x-mask:dynamic="phoneMask" autofocus autocomplete="phone2" />
 
                         <x-form.error :messages="$errors->get('phone2')" />
                     </div>
-                </div>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
+                    <div class="space-y-2">
+                        <x-form.label for="whatsapp" :value="__('Whatsapp')" />
+
+                        <x-form.input id="whatsapp" name="whatsapp" type="text" class="block w-full"
+                            :value="old('whatsapp', $company->whatsapp)" x-mask:dynamic="phoneMask" autofocus autocomplete="whatsapp" />
+
+                        <x-form.error :messages="$errors->get('whatsapp')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label for="whatsapp2" :value="__('Whatsapp 2')" />
+
+                        <x-form.input id="whatsapp2" name="whatsapp2" type="text" class="block w-full"
+                            :value="old('whatsapp2', $company->whatsapp2)" x-mask:dynamic="phoneMask" autofocus autocomplete="whatsapp2" />
+
+                        <x-form.error :messages="$errors->get('whatsapp2')" />
+                    </div>
+
                     <div class="space-y-2">
                         <x-form.label for="payment_methods" :value="__('Métodos de Pagamento *')" />
-
                         <x-form.select
                             id="payment_methods"
                             name="payment_methods[]"
@@ -172,12 +187,12 @@
                             multiple
                             autocomplete="payment_methods"
                         >
-                            <option value="dinheiro" {{ in_array('dinheiro', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Dinheiro</option>
-                            <option value="pix" {{ in_array('pix', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Pix</option>
-                            <option value="cartão de crédito" {{ in_array('cartão de crédito', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Cartão de crédito</option>
-                            <option value="cartão de débito" {{ in_array('cartão de débito', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Cartão de débito</option>
-                            <option value="boleto" {{ in_array('boleto', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Boleto</option>
-                            <option value="transferência bancária" {{ in_array('transferência bancária', old('payment_methods', explode(',', $company->payment_methods))) ? 'selected' : false }}>Transferência bancária</option>
+                            <option value="dinheiro" {{ in_array('dinheiro', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Dinheiro</option>
+                            <option value="pix" {{ in_array('pix', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Pix</option>
+                            <option value="cartão de crédito" {{ in_array('cartão de crédito', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Cartão de crédito</option>
+                            <option value="cartão de débito" {{ in_array('cartão de débito', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Cartão de débito</option>
+                            <option value="boleto" {{ in_array('boleto', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Boleto</option>
+                            <option value="transferência bancária" {{ in_array('transferência bancária', old('payment_methods', explode(', ', $company->payment_methods))) ? 'selected' : false }}>Transferência bancária</option>
                         </x-form.select>
 
                         <x-form.error :messages="$errors->get('payment_methods')" />

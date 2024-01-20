@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Enums\OrderStatusEnum;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,8 @@ class Company extends Model
         'description',
         'phone',
         'phone2',
+        'whatsapp',
+        'whatsapp2',
         'opening_hours',
         'opening_24h',
         'cep',
@@ -155,7 +158,7 @@ class Company extends Model
      */
     public function lastOrderApproved()
     {
-        return $this->hasOne(Order::class)->where('status', 'approved')->latest();
+        return $this->hasOne(Order::class)->whereIn('status', [OrderStatusEnum::Accomplished, OrderStatusEnum::Opened])->latest();
     }
 
     /**
@@ -165,8 +168,7 @@ class Company extends Model
     {
         return $query->where('status', true)
             ->whereHas('orders', function ($query) {
-                $query->where('status', 'approved')
-                    ->where('expire_at', '>', now());
+                $query->whereIn('status', [OrderStatusEnum::Accomplished, OrderStatusEnum::Opened]);
             });
     }
 
@@ -175,7 +177,10 @@ class Company extends Model
      */
     public function isApproved(): Attribute
     {
-        return Attribute::get(fn () => $this->orders()->where('status', 'approved')->where('expire_at', '>', now())->exists());
+        return Attribute::get(fn () =>
+            $this->status &&
+            $this->orders()->whereIn('status', [OrderStatusEnum::Accomplished->value, OrderStatusEnum::Opened->value])->where('expire_at', '>', now())->exists()
+        );
     }
 
     /**

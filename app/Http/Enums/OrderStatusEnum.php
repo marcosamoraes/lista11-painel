@@ -4,8 +4,8 @@ namespace App\Http\Enums;
 
 enum OrderStatusEnum: string
 {
-    case Pending = 'pending';
-    case Approved = 'approved';
-    case Canceled = 'canceled';
-    case Reimbursed = 'reimbursed';
+    case Accomplished = 'accomplished';
+    case Cancelled = 'cancelled';
+    case Opened = 'opened';
+    case NotRenewed = 'not_renewed';
 }

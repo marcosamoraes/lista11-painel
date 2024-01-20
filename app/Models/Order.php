@@ -21,10 +21,14 @@ class Order extends Model
         'user_id',
         'company_id',
         'pack_id',
+        'external_id',
         'payment_method',
         'value',
+        'parcels',
+        'parcels_data',
         'status',
         'payment_code',
+        'image',
         'contract_name',
         'contract_cpf',
         'contract_url',
@@ -46,6 +50,23 @@ class Order extends Model
         'expire_at' => 'datetime',
         'contract_signed_at' => 'datetime',
     ];
+
+    protected $appends = [
+        'image_url',
+    ];
+
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(fn () => $this->image ? asset('storage/' . $this->image) : null);
+    }
+
+    protected function parcelsData(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => json_decode($value, true),
+            set: fn (string|array $value) => is_array($value) ? json_encode($value) : $value
+        );
+    }
 
     public function getExpireAt()
     {

@@ -16,7 +16,16 @@
                     </h2>
                 </header>
 
-                <div class="mb-5 grid grid-cols-1 {{ auth()->user()->role === 'user' ? 'sm:grid-cols-3' : 'sm:grid-cols-4' }} gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
+                    <div class="space-y-2 col-span-4">
+                        <x-form.label for="name" :value="__('Nome *')" />
+
+                        <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name')"
+                            required autofocus autocomplete="name" />
+
+                        <x-form.error :messages="$errors->get('name')" />
+                    </div>
+
                     @if (auth()->user()->role === 'user')
                         <input type="hidden" name="client_id" value="{{ auth()->id() }}">
                     @else
@@ -47,15 +56,6 @@
                     @endif
 
                     <div class="space-y-2">
-                        <x-form.label for="name" :value="__('Nome *')" />
-
-                        <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name')"
-                            required autofocus autocomplete="name" />
-
-                        <x-form.error :messages="$errors->get('name')" />
-                    </div>
-
-                    <div class="space-y-2">
                         <x-form.label for="phone" :value="__('Telefone *')" />
 
                         <x-form.input id="phone" name="phone" type="text" class="block w-full"
@@ -66,16 +66,34 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="phone2" :value="__('Whatsapp')" />
+                        <x-form.label for="phone2" :value="__('Telefone 2')" />
 
                         <x-form.input id="phone2" name="phone2" type="text" class="block w-full"
                             :value="old('phone2')" x-mask:dynamic="phoneMask" autofocus autocomplete="phone2" />
 
                         <x-form.error :messages="$errors->get('phone2')" />
                     </div>
-                </div>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
+                    <div class="space-y-2">
+                        <x-form.label for="whatsapp" :value="__('Whatsapp')" />
+
+                        <x-form.input id="whatsapp" name="whatsapp" type="text" class="block w-full"
+                            :value="old('whatsapp')" x-mask:dynamic="phoneMask" autofocus required
+                            autocomplete="phone" />
+
+                        <x-form.error :messages="$errors->get('whatsapp')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label for="whatsapp2" :value="__('Whatsapp 2')" />
+
+                        <x-form.input id="whatsapp2" name="whatsapp2" type="text" class="block w-full"
+                            :value="old('whatsapp2')" x-mask:dynamic="phoneMask" autofocus required
+                            autocomplete="phone" />
+
+                        <x-form.error :messages="$errors->get('whatsapp2')" />
+                    </div>
+
                     <div class="space-y-2">
                         <x-form.label for="payment_methods" :value="__('Métodos de Pagamento *')" />
 

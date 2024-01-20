@@ -47,11 +47,10 @@
                     <x-form.select id="status" name="status" type="text" class="block" style="min-width: 250px" :value="request()->status"
                         autofocus autocomplete="status">
                         <option value="">Status</option>
-                        <option value="pending" {{ request()->status === 'pending' ? 'selected' : false }}>Pendente</option>
-                        <option value="approved" {{ request()->status === 'approved' ? 'selected' : false }}>Aprovado
-                        </option>
-                        <option value="canceled" {{ request()->status === 'canceled' ? 'selected' : false }}>Cancelado
-                        </option>
+                        <option value="accomplished" {{ request()->status === 'accomplished' ? 'selected' : false }}>Concretizado</option>
+                        <option value="opened" {{ request()->status === 'opened' ? 'selected' : false }}>Em aberto</option>
+                        <option value="cancelled" {{ request()->status === 'cancelled' ? 'selected' : false }}>Cancelado</option>
+                        <option value="not_renewed" {{ request()->status === 'not_renewed' ? 'selected' : false }}>Não renovado</option>
                     </x-form.select>
 
                     <x-form.select id="payment_method" name="payment_method" type="text" class="block" style="min-width: 250px" :value="request()->payment_method"
@@ -123,14 +122,16 @@
                                         <td
                                             class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                             <div class="flex gap-3 items-center">
-                                                @if ($order->status === 'pending')
-                                                    <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full" title="Pendente"></span>
-                                                @elseif ($order->status === 'approved')
-                                                    <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full" title="Aprovado"></span>
-                                                @elseif ($order->status === 'canceled')
+                                                @if ($order->status === 'accomplished')
+                                                    <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full" title="Concretizado"></span>
+                                                @elseif ($order->status === 'opened')
+                                                    <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full" title="Em Aberto"></span>
+                                                @elseif ($order->status === 'cancelled')
                                                     <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full" title="Cancelado"></span>
+                                                @elseif ($order->status === 'not_renewed')
+                                                    <span class="block border border-gray-500 bg-gray-500 w-2 h-2 rounded-full" title="Não renovado"></span>
                                                 @else
-                                                    <span class="block border border-gray-500 bg-gray-500 w-2 h-2 rounded-full" title="Reembolsado"></span>
+                                                    <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full" title="Em Aberto"></span>
                                                 @endif
                                                 <p>
                                                     {{ $order->company->name }}<br />
@@ -172,7 +173,7 @@
                                                         </x-button>
                                                     </a>
                                                 @endif
-                                                @if ($order->status === 'pending')
+                                                @if ($order->status === 'opened')
                                                     <a href="{{ route('orders.payment.generate', $order->id) }}"
                                                         target="_blank">
                                                         <x-button variant="info" title="gerar link para pagamento">

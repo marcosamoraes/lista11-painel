@@ -9,3 +9,7 @@
 .dark .ps__rail-x {
     background-color: transparent !important;
 }
+
+.col-span-3 {
+    grid-column: span 3 / span 3;
+}

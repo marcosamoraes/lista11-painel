@@ -17,7 +17,7 @@
 
     <x-search-bar />
 
-    <div class="filters" style="display: none">
+    <div class="filters" style="display: {{ request()->has('search') ? 'flex' : 'none' }}">
         <div class="max-w-10xl sm:px-6 lg:px-8 mt-5">
             <div class="flex justify-between">
                 <form method="GET" class="flex flex-wrap gap-3 w-full">
@@ -100,6 +100,9 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Nome</span>
                                 </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de expiração</span>
+                                </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Ações</span>
                                 </th>
@@ -130,6 +133,15 @@
                                                 @endif
                                             </p>
                                         </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white text-center">
+                                        @if ($company->lastOrderApproved?->expire_at && $company->lastOrderApproved?->expire_at->isPast())
+                                            <span class=" text-red-500">
+                                                {{ $company->lastOrderApproved?->expire_at?->format('d/m/Y') ?? '-' }}
+                                            </span>
+                                        @else
+                                            {{ $company->lastOrderApproved?->expire_at?->format('d/m/Y') ?? '-' }}
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 flex-wrap text-gray-900 dark:text-white flex gap-3">
                                         @if (auth()->user()->role === 'admin')

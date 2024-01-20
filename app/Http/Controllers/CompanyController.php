@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\CompanyExport;
+use App\Http\Enums\OrderStatusEnum;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
@@ -76,10 +77,14 @@ class CompanyController extends Controller
                 $query->whereDate('created_at', '<=', $request->final_created_at);
             })
             ->when($request->initial_expire_at, function ($query) use ($request) {
-                $query->whereDate('expire_at', '>=', $request->initial_expire_at);
+                $query->whereHas('lastOrderApproved', function ($query) use ($request) {
+                    $query->whereDate('expire_at', '>=', $request->initial_expire_at);
+                });
             })
             ->when($request->final_expire_at, function ($query) use ($request) {
-                $query->whereDate('expire_at', '<=', $request->final_expire_at);
+                $query->whereHas('lastOrderApproved', function ($query) use ($request) {
+                    $query->whereDate('expire_at', '<=', $request->final_expire_at);
+                });
             })
             ->where(function ($query) {
                 if (Auth::user()->role === UserRoleEnum::Seller->value) {

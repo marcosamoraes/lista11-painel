@@ -36,6 +36,9 @@ class StoreOrderRequest extends FormRequest
             'pack_id' => ['required', 'exists:packs,id'],
             'value' => ['required', 'numeric'],
             'payment_method' => ['nullable', 'string'],
+            'image' => ['nullable', 'file'],
+            'parcels' => ['nullable', 'integer'],
+            'parcels_data' => ['nullable', 'string'],
         ];
     }
 }

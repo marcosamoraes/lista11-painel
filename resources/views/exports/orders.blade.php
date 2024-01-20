@@ -25,14 +25,14 @@
             <td>{{ $order->company->city }}</td>
             <td>{{ $order->company->state }}</td>
             <td>
-                @if ($order->status === 'pending')
-                    Pendente
-                @elseif ($order->status === 'approved')
-                    Aprovado
-                @elseif ($order->status === 'canceled')
-                    Cancelado
-                @else
-                    Reembolsado
+                @if ($order->status === 'accomplished')
+                    <span>Concretizado</span>
+                @elseif ($order->status === 'opened')
+                    <span>Em Aberto</span>
+                @elseif ($order->status === 'cancelled')
+                    <span>Cancelado</span>
+                @elseif ($order->status === 'not_renewed')
+                    <span>Não renovado</span>
                 @endif
             </td>
             <td>R$ {{ number_format($order->value, 2, ',', '.') }}</td>

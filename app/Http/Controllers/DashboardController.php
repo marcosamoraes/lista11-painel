@@ -51,6 +51,13 @@ class DashboardController extends Controller
             ->where('status', false)
             ->count();
 
+        $countExpiredCompanies = Company::where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->whereHas('lastOrderApproved', function ($query) {
+                $query->where('expire_at', '<', now());
+            })
+            ->count();
+
         $countSellers = Seller::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
             ->whereHas('user', function ($query) {
@@ -60,7 +67,7 @@ class DashboardController extends Controller
 
         $sumOrdersTotal = Order::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
-            ->where('status', OrderStatusEnum::Approved)
+            ->where('status', OrderStatusEnum::Accomplished)
             ->sum('value');
 
         $countContacts = Contact::where('created_at', '>=', $initialDate)
@@ -89,7 +96,7 @@ class DashboardController extends Controller
         $paymentMethods = Order::selectRaw('count(*) as total, payment_method')
             ->where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
-            ->where('status', OrderStatusEnum::Approved)
+            ->where('status', OrderStatusEnum::Accomplished)
             ->groupBy('payment_method')
             ->orderBy('payment_method', 'asc')
             ->get();
@@ -101,7 +108,7 @@ class DashboardController extends Controller
             ->join('orders', 'user_id', '=', 'users.id')
             ->where('orders.created_at', '>=', $initialDate)
             ->where('orders.created_at', '<=', $finalDate)
-            ->where('orders.status', OrderStatusEnum::Approved)
+            ->where('orders.status', OrderStatusEnum::Accomplished)
             ->groupBy('name')
             ->orderBy('name', 'asc')
             ->get();
@@ -113,6 +120,7 @@ class DashboardController extends Controller
             'countClients',
             'countActiveCompanies',
             'countInactiveCompanies',
+            'countExpiredCompanies',
             'countSellers',
             'sumOrdersTotal',
             'companiesPerCityLabels',
@@ -142,7 +150,7 @@ class DashboardController extends Controller
 
         $sumOrdersTotal = Order::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
-            ->where('status', OrderStatusEnum::Approved)
+            ->where('status', OrderStatusEnum::Accomplished)
             ->where('user_id', auth()->id())
             ->sum('value');
 

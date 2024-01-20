@@ -38,6 +38,8 @@ class StoreCompanyRequest extends FormRequest
             'description' => 'nullable|string',
             'phone' => 'nullable|string|max:255',
             'phone2' => 'nullable|string|max:255',
+            'whatsapp' => 'nullable|string|max:255',
+            'whatsapp2' => 'nullable|string|max:255',
             'opening_hours' => 'nullable|string',
             'opening_24h' => 'nullable|boolean',
             'cep' => 'required|string|max:255',

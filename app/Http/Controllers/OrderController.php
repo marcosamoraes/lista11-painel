@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\OrderExport;
+use App\Http\Enums\OrderStatusEnum;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -12,6 +13,7 @@ use App\Models\Order;
 use App\Models\Pack;
 use App\Models\Seller;
 use App\Models\User;
+use Buglinjo\LaravelWebp\Facades\Webp;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -24,6 +26,10 @@ use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use MercadoPago\Client\Payment\PaymentClient;
+use MercadoPago\Client\Preference\PreferenceClient;
+use MercadoPago\Exceptions\MPApiException;
+use MercadoPago\MercadoPagoConfig;
 
 class OrderController extends Controller
 {
@@ -120,6 +126,19 @@ class OrderController extends Controller
             $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
             $validated['uuid'] = Str::uuid();
 
+            if (isset($validated['image'])) {
+                $webp = Webp::make($validated['image']);
+                $fileName = 'orders/' . uniqid() . '.webp';
+
+                if (!file_exists(public_path('storage/orders'))) {
+                    mkdir(public_path('storage/orders'), 0777, true);
+                }
+
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['image'] = $fileName;
+                }
+            }
+
             Order::create($validated);
 
             DB::commit();
@@ -154,18 +173,35 @@ class OrderController extends Controller
 
             $validated = $request->validated();
 
-            if ($order->status === 'pending' && $validated['status'] === 'approved') {
+            if ($order->status === OrderStatusEnum::Opened->value && $validated['status'] === OrderStatusEnum::Accomplished->value) {
                 $validated['approved_at'] = now();
                 $validated['expire_at'] = $order->getExpireAt();
             }
 
-            if ($order->status === 'pending' && $validated['status'] === 'canceled') {
+            if ($order->status === OrderStatusEnum::Opened->value && $order->status === OrderStatusEnum::Cancelled->value) {
                 $validated['canceled_at'] = now();
             }
 
-            if ($order->status !== 'pending' && $validated['status'] === 'pending') {
+            if ($order->status !== OrderStatusEnum::Opened->value && $order->status === OrderStatusEnum::Opened->value) {
                 $validated['approved_at'] = null;
                 $validated['canceled_at'] = null;
+            }
+
+            if (isset($validated['image'])) {
+                if ($order->image && file_exists('storage/' . $order->image)) {
+                    unlink('storage/' . $order->image);
+                }
+
+                if (!file_exists(public_path('storage/orders'))) {
+                    mkdir(public_path('storage/orders'), 0777, true);
+                }
+
+                $webp = Webp::make($validated['image']);
+                $fileName = 'orders/' . uniqid() . '.webp';
+
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['image'] = $fileName;
+                }
             }
 
             $order->update($validated);
@@ -184,56 +220,52 @@ class OrderController extends Controller
 
     public function generatePaymentLink(Order $order)
     {
-        $pagseguroEmail = env('PAGSEGURO_EMAIL');
-        $pagseguroToken = env('PAGSEGURO_TOKEN');
-        $generateCodeUrl = "https://ws.pagseguro.uol.com.br/v2/checkout?email={$pagseguroEmail}&token={$pagseguroToken}";
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACCESS_TOKEN'));
+
+        $client = new PreferenceClient();
 
         try {
-            $id = $order->pack->id;
-            $title = $order->pack->title;
-            $amount = number_format($order->value, 2, '.', '');
-            $orderId = $order->id;
-
-            $data =
-                <<<XML
-                    <checkout>
-                        <email>{{$pagseguroEmail}}</email>
-                        <token>{{$pagseguroToken}}</token>
-                        <currency>BRL</currency>
-                        <items>
-                            <item>
-                                <id>{{$id}}</id>
-                                <description>{{$title}}</description>
-                                <amount>{{$amount}}</amount>
-                                <quantity>1</quantity>
-                                <weight>0</weight>
-                                <shippingCost>0.00</shippingCost>
-                            </item>
-                        </items>
-                        <shippingAddressRequired>false</shippingAddressRequired>
-                        <reference>{{$orderId}}</reference>
-                    </checkout>
-                XML;
-
-            $client = new Client();
-
-            $headers = [
-                'Content-Type' => 'application/xml; charset=ISO-8859-1',
-            ];
-            $response = $client->post($generateCodeUrl, [
-                'headers' => $headers,
-                'body' => $data,
+            $preference = $client->create([
+                "items" => [
+                    [
+                        "title" => $order->pack->title,
+                        "quantity" => 1,
+                        "currency_id" => "BRL",
+                        "unit_price" => (float) number_format($order->value, 2, '.', ''),
+                    ]
+                ],
+                "payment_methods" => [
+                    "excluded_payment_types" => [
+                        [
+                            "id" => "ticket",
+                        ],
+                        [
+                            "id" => "bank_transfer",
+                        ],
+                        [
+                            "id" => "digital_currency",
+                        ],
+                    ],
+                ],
+                "external_reference" => $order->id,
+                "notification_url" => route('webhook'),
             ]);
+        } catch (MPApiException $e) {
+            Log::error($e->getMessage());
+            Alert::toast('Falha ao gerar link de pagamento.', 'error');
+            return back()->withInput();
+        }
 
-            $xml = simplexml_load_string($response->getBody());
+        $order->update([
+            'external_id' => $preference->id,
+        ]);
 
-            if (!$xml) {
-                throw new Exception("Error Processing Request", 1);
-            }
+        Log::info('Mercado Pago Preference', [$preference]);
 
-            return redirect("https://pagseguro.uol.com.br/v2/checkout/payment.html?code={$xml->code}");
-        } catch (RequestException $e) {
-            dd($e->getResponse()->getBody()->getContents());
+        if (!app()->environment('local')) {
+            return redirect($preference->init_point);
+        } else {
+            return redirect($preference->sandbox_init_point);
         }
     }
 
@@ -242,7 +274,44 @@ class OrderController extends Controller
      */
     public function paymentWebhook(Request $request)
     {
-        Log::info('Pagseguro webhook', $request->all());
+        Log::info('MercadoPago Webhook', $request->all());
+
+        MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACCESS_TOKEN'));
+
+        if ($request->type !== 'payment') {
+            return response()->json(null, 201);
+        }
+
+        $client = new PaymentClient();
+
+        $payment = $client->get($request->data['id']);
+
+        Log::info('MercadoPago Payment', [$payment]);
+
+        $order = Order::where('external_id', $payment->external_reference)->first();
+
+        if (!$order) {
+            return response()->json(null, 201);
+        }
+
+        switch ($payment->status) {
+            case 'approved':
+                $order->status = OrderStatusEnum::Accomplished;
+                $order->approved_at = now();
+                $order->save();
+                break;
+
+            case 'cancelled':
+                $order->status = OrderStatusEnum::Cancelled;
+                $order->canceled_at = now();
+                $order->save();
+                break;
+
+            default:
+                break;
+        }
+
+        return response()->json(null, 201);
     }
 
     public function viewContract(Order $order)
