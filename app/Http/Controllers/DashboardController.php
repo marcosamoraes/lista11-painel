@@ -96,7 +96,7 @@ class DashboardController extends Controller
 
         $paymentMethods = Order::select(
                 DB::raw('count(*) as total'),
-                DB::raw('parcels_data->"$[0].payment_method" as payment_method')
+                ['parcels_data->"$[0].payment_method"' => 'payment_method']
             )
             ->where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
