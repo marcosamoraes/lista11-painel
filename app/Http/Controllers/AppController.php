@@ -108,6 +108,11 @@ class AppController extends Controller
      */
     public function destroy(App $app)
     {
+        if ($app->companies()->count() > 0) {
+            Alert::toast('Não é possível deletar um app que está sendo usado por alguma empresa.', 'error');
+            return back();
+        }
+
         $app->delete();
         Alert::toast('App deletado com sucesso.', 'success');
         return back();
