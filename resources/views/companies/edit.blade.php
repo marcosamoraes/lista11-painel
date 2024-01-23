@@ -526,7 +526,7 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imageViewer()">
                     <div class="space-y-2">
-                        <x-form.label for="image" :value="__('Imagem principal')" />
+                        <x-form.label for="image" :value="__('Imagem principal (500x500px)')" />
                         <x-form.input-file id="image" name="image" autofocus autocomplete="image" @change="fileChosen" />
                         <x-form.error :messages="$errors->get('image')" />
                     </div>
@@ -552,7 +552,7 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="bannerViewer()">
                     <div class="space-y-2">
-                        <x-form.label for="banner" :value="__('Banner')" />
+                        <x-form.label for="banner" :value="__('Banner (1920x520px)')" />
                         <x-form.input-file id="banner" name="banner" autofocus autocomplete="banner" @change="fileChosen" />
                         <x-form.error :messages="$errors->get('banner')" />
                     </div>

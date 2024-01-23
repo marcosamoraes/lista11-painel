@@ -132,39 +132,54 @@ class CompanyController extends Controller
             $validated = $request->validated();
 
             if (isset($validated['image'])) {
-                $webp = Webp::make($validated['image']);
-                $fileName = 'companies/' . uniqid() . '.webp';
-
                 if (!file_exists(public_path('storage/companies'))) {
                     mkdir(public_path('storage/companies'), 0777, true);
                 }
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['image'] = $fileName;
+                $fileName = 'companies/' . uniqid() . '.webp';
+
+                if ($validated['image']->getClientOriginalExtension() !== 'webp') {
+                    $file = Webp::make($validated['image']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['image'] = $fileName;
+                    }
+                } else {
+                    $validated['image'] = $validated['image']->store('companies', 'public');
                 }
             }
 
             if (isset($validated['banner'])) {
-                $webp = Webp::make($validated['banner']);
-                $fileName = 'companies/' . uniqid() . '.webp';
-
                 if (!file_exists(public_path('storage/companies'))) {
                     mkdir(public_path('storage/companies'), 0777, true);
                 }
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['banner'] = $fileName;
+                $fileName = 'companies/' . uniqid() . '.webp';
+
+                if ($validated['banner']->getClientOriginalExtension() !== 'webp') {
+                    $file = Webp::make($validated['banner']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['banner'] = $fileName;
+                    }
+                } else {
+                    $validated['banner'] = $validated['banner']->store('companies', 'public');
                 }
             }
 
             if (isset($validated['images']) && count($validated['images']) > 0) {
                 $images = [];
                 foreach ($validated['images'] as $image) {
-                    $webp = Webp::make($image);
                     $fileName = 'companies/' . uniqid() . '.webp';
 
-                    if ($webp->save(public_path('storage/' . $fileName))) {
-                        $images[] = $fileName;
+                    if ($image->getClientOriginalExtension() !== 'webp') {
+                        $file = Webp::make($image);
+
+                        if ($file->save(public_path('storage/' . $fileName))) {
+                            $image[] = $fileName;
+                        }
+                    } else {
+                        $images[] = $image->store('companies', 'public');
                     }
                 }
                 $validated['images'] = $images;
@@ -245,11 +260,16 @@ class CompanyController extends Controller
                     mkdir(public_path('storage/companies'), 0777, true);
                 }
 
-                $webp = Webp::make($validated['image']);
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['image'] = $fileName;
+                if ($validated['image']->getClientOriginalExtension() !== 'webp') {
+                    $file = Webp::make($validated['image']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['image'] = $fileName;
+                    }
+                } else {
+                    $validated['image'] = $validated['image']->store('companies', 'public');
                 }
             }
 
@@ -262,11 +282,16 @@ class CompanyController extends Controller
                     mkdir(public_path('storage/companies'), 0777, true);
                 }
 
-                $webp = Webp::make($validated['banner']);
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['banner'] = $fileName;
+                if ($validated['banner']->getClientOriginalExtension() !== 'webp') {
+                    $file = Webp::make($validated['banner']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['banner'] = $fileName;
+                    }
+                } else {
+                    $validated['banner'] = $validated['banner']->store('companies', 'public');
                 }
             }
 
@@ -279,11 +304,16 @@ class CompanyController extends Controller
                 }
                 $images = [];
                 foreach ($validated['images'] as $image) {
-                    $webp = Webp::make($image);
                     $fileName = 'companies/' . uniqid() . '.webp';
 
-                    if ($webp->save(public_path('storage/' . $fileName))) {
-                        $images[] = $fileName;
+                    if ($image->getClientOriginalExtension() !== 'webp') {
+                        $file = Webp::make($image);
+
+                        if ($file->save(public_path('storage/' . $fileName))) {
+                            $images[] = $fileName;
+                        }
+                    } else {
+                        $images[] = $image->store('companies', 'public');
                     }
                 }
                 $validated['images'] = $images;
