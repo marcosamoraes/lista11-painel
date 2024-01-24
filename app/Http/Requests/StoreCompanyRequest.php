@@ -33,6 +33,7 @@ class StoreCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'nullable|exists:users,id',
             'client_id' => 'required|exists:clients,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use DateTime;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCompanyRequest extends FormRequest
@@ -19,9 +20,18 @@ class UpdateCompanyRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
+        $expireAt = DateTime::createFromFormat('d/m/Y H:i:s', $this->expire_at);
+
+        if (!$expireAt) {
+            $expireAt = DateTime::createFromFormat('d/m/Y', $this->expire_at);
+        }
+
+        $expireAtFormatted = $expireAt ? $expireAt->format('Y-m-d H:i:s') : null;
+
         $this->merge([
             'tags' => explode(',', $this->tags),
             'payment_methods' => implode(', ', $this->payment_methods),
+            'expire_at' => $expireAtFormatted,
         ]);
     }
 
@@ -33,6 +43,7 @@ class UpdateCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'nullable|exists:users,id',
             'client_id' => 'nullable|exists:clients,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -76,6 +87,8 @@ class UpdateCompanyRequest extends FormRequest
             'apps' => 'nullable|array',
             'apps.*.name' => 'nullable|exists:apps,id',
             'apps.*.value' => 'nullable|string|max:255',
+
+            'expire_at' => 'nullable|date',
         ];
     }
 }

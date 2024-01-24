@@ -126,10 +126,8 @@
                                                     <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full" title="Concretizado"></span>
                                                 @elseif ($order->status === 'opened')
                                                     <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full" title="Em Aberto"></span>
-                                                @elseif ($order->status === 'cancelled')
+                                                @elseif ($order->status === 'cancelled' || $order->status === 'not_renewed')
                                                     <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full" title="Cancelado"></span>
-                                                @elseif ($order->status === 'not_renewed')
-                                                    <span class="block border border-gray-500 bg-gray-500 w-2 h-2 rounded-full" title="Não renovado"></span>
                                                 @else
                                                     <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full" title="Em Aberto"></span>
                                                 @endif
@@ -170,6 +168,13 @@
                                                         target="_blank">
                                                         <x-button variant="black" title="Link do contrato">
                                                             <i class="fas fa-file"></i>
+                                                        </x-button>
+                                                    </a>
+                                                @endif
+                                                @if ($order->image_url)
+                                                    <a href="{{ $order->image_url }}" target="_blank">
+                                                        <x-button variant="secondary" title="Upload do contrato">
+                                                            <i class="fas fa-image"></i>
                                                         </x-button>
                                                     </a>
                                                 @endif

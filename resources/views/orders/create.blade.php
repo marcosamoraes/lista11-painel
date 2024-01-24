@@ -205,6 +205,7 @@
                                 <option value="cartão de débito">Cartão de débito</option>
                                 <option value="boleto">Boleto</option>
                                 <option value="transferência bancária">Transferência bancária</option>
+                                <option value="A combinar">A combinar</option>
                             </x-form.select>
 
                             <x-form.error :messages="$errors->get('parcelData.0.payment_method')" />

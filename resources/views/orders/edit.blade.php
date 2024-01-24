@@ -141,7 +141,7 @@
                         >
                             <option value="">Selecione</option>
                             @foreach ( $companies as $company )
-                                <option value="{{ $company->id }}" {{ $company->id === old('company_id', $order->company_id) ? 'selected' : false }}>{{ $company->name }}</option>
+                                <option value="{{ $company->id }}" {{ $company->id == old('company_id', $order->company_id) ? 'selected' : false }}>{{ $company->name }}</option>
                             @endforeach
                         </x-form.select>
 
@@ -166,7 +166,7 @@
                         >
                             <option value="">Selecione</option>
                             @foreach ( $packs as $pack )
-                                <option value="{{ $pack->id }}" {{ $pack->id === old('pack_id', $order->pack_id) ? 'selected' : false }}>{{ $pack->title }}</option>
+                                <option value="{{ $pack->id }}" {{ $pack->id == old('pack_id', $order->pack_id) ? 'selected' : false }}>{{ $pack->title }}</option>
                             @endforeach
                         </x-form.select>
 
@@ -315,6 +315,7 @@
                                 <option value="cartão de débito">Cartão de débito</option>
                                 <option value="boleto">Boleto</option>
                                 <option value="transferência bancária">Transferência bancária</option>
+                                <option value="A combinar">A combinar</option>
                             </x-form.select>
                         </div>
                     </div>
@@ -339,7 +340,10 @@
 
                         <div class="space-y-2">
                             <x-form.label for="image" :value="__('Preview')" />
-                            <template x-if="imageUrl">
+                            <template x-if="imageUrl && imageUrl.startsWith('data:application/pdf')">
+                                <i class="fa-solid fa-2x fa-file-pdf"></i>
+                            </template>
+                            <template x-if="imageUrl && !imageUrl.startsWith('data:application/pdf')">
                                 <img :src="imageUrl"
                                     class="object-cover rounded border border-gray-200"
                                     style="width: 100px; height: 100px;"

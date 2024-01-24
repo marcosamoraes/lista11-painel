@@ -54,13 +54,6 @@
                         <option value="0" {{ request()->status === '0' ? 'selected' : false }}>Inativo</option>
                     </x-form.select>
 
-                    <x-form.select id="status_sell" name="status_sell" type="text" class="block" style="min-width: 250px" :value="request()->status_sell"
-                        autofocus autocomplete="status_sell">
-                        <option value="">Status de Venda</option>
-                        <option value="1" {{ request()->status_sell === '1' ? 'selected' : false }}>Ativo</option>
-                        <option value="0" {{ request()->status_sell === '0' ? 'selected' : false }}>Inativo</option>
-                    </x-form.select>
-
                     <div class="flex flex-col">
                         <label for="">Data de criação inicial</label>
                         <x-form.input type="date" name="initial_created_at" :value="request()->initial_created_at" style="min-width: 250px" />
@@ -118,10 +111,14 @@
                                     <td
                                         class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         <div class="flex gap-3 items-center">
-                                            @if ($company->is_approved)
-                                                <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
+                                            @if ($company->lastOrderApproved?->expire_at && $company->lastOrderApproved?->expire_at->isPast())
+                                                <span class="block border border-yellow-500 bg-yellow-500 w-2 h-2 rounded-full"></span>
                                             @else
-                                                <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
+                                                @if ($company->is_approved)
+                                                    <span class="block border border-green-500 bg-green-500 w-2 h-2 rounded-full"></span>
+                                                @else
+                                                    <span class="block border border-red-500 bg-red-500 w-2 h-2 rounded-full"></span>
+                                                @endif
                                             @endif
                                             <p>
                                                 {{ $company->name }}<br />

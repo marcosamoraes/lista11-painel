@@ -27,6 +27,11 @@ class UpdateOrderRequest extends FormRequest
         $updatedAtFormatted = $updatedAt ? $updatedAt->format('Y-m-d H:i:s') : null;
 
         $expireAt = DateTime::createFromFormat('d/m/Y H:i:s', $this->expire_at);
+
+        if (!$expireAt) {
+            $expireAt = DateTime::createFromFormat('d/m/Y', $this->expire_at);
+        }
+
         $expireAtFormatted = $expireAt ? $expireAt->format('Y-m-d H:i:s') : null;
 
         $approvedAt = DateTime::createFromFormat('d/m/Y H:i:s', $this->approved_at);

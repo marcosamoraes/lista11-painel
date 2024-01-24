@@ -177,10 +177,7 @@ class Company extends Model
      */
     public function isApproved(): Attribute
     {
-        return Attribute::get(fn () =>
-            $this->status &&
-            $this->orders()->whereIn('status', [OrderStatusEnum::Accomplished->value, OrderStatusEnum::Opened->value])->where('expire_at', '>', now())->exists()
-        );
+        return Attribute::get(fn () => $this->status);
     }
 
     /**

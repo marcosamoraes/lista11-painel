@@ -123,19 +123,26 @@ class OrderController extends Controller
 
             $validated = $request->validated();
 
-            $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
+            $company = Company::find($validated['company_id']);
+
+            $validated['user_id'] = $company->user_id;
             $validated['uuid'] = Str::uuid();
 
             if (isset($validated['image'])) {
-                $webp = Webp::make($validated['image']);
-                $fileName = 'orders/' . uniqid() . '.webp';
-
                 if (!file_exists(public_path('storage/orders'))) {
                     mkdir(public_path('storage/orders'), 0777, true);
                 }
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['image'] = $fileName;
+                $fileName = 'orders/' . uniqid() . '.webp';
+
+                if (in_array($validated['image']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
+                    $file = Webp::make($validated['image']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['image'] = $fileName;
+                    }
+                } else {
+                    $validated['image'] = $validated['image']->store('orders', 'public');
                 }
             }
 
@@ -196,11 +203,16 @@ class OrderController extends Controller
                     mkdir(public_path('storage/orders'), 0777, true);
                 }
 
-                $webp = Webp::make($validated['image']);
                 $fileName = 'orders/' . uniqid() . '.webp';
 
-                if ($webp->save(public_path('storage/' . $fileName))) {
-                    $validated['image'] = $fileName;
+                if (in_array($validated['image']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
+                    $file = Webp::make($validated['image']);
+
+                    if ($file->save(public_path('storage/' . $fileName))) {
+                        $validated['image'] = $fileName;
+                    }
+                } else {
+                    $validated['image'] = $validated['image']->store('orders', 'public');
                 }
             }
 

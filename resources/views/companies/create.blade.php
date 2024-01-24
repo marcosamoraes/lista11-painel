@@ -26,6 +26,32 @@
                         <x-form.error :messages="$errors->get('name')" />
                     </div>
 
+                    @if (auth()->user()->role === 'admin')
+                        <div class="space-y-2">
+                            <x-form.label
+                                for="user_id"
+                                :value="__('Vendedor')"
+                            />
+
+                            <x-form.select
+                                id="user_id"
+                                name="user_id"
+                                type="text"
+                                class="block w-full select2"
+                                :value="old('user_id')"
+                                autofocus
+                                autocomplete="user_id"
+                            >
+                                <option value="">Selecione</option>
+                                @foreach ( $sellers as $seller )
+                                    <option value="{{ $seller->id }}" {{ old('user_id') == $seller->id ? 'selected' : false }}>{{ $seller->name }}</option>
+                                @endforeach
+                            </x-form.select>
+
+                            <x-form.error :messages="$errors->get('user_id')" />
+                        </div>
+                    @endif
+
                     @if (auth()->user()->role === 'user')
                         <input type="hidden" name="client_id" value="{{ auth()->id() }}">
                     @else
@@ -78,7 +104,7 @@
                         <x-form.label for="whatsapp" :value="__('Whatsapp')" />
 
                         <x-form.input id="whatsapp" name="whatsapp" type="text" class="block w-full"
-                            :value="old('whatsapp')" x-mask:dynamic="phoneMask" autofocus required
+                            :value="old('whatsapp')" x-mask:dynamic="phoneMask" autofocus
                             autocomplete="phone" />
 
                         <x-form.error :messages="$errors->get('whatsapp')" />
@@ -88,13 +114,13 @@
                         <x-form.label for="whatsapp2" :value="__('Whatsapp 2')" />
 
                         <x-form.input id="whatsapp2" name="whatsapp2" type="text" class="block w-full"
-                            :value="old('whatsapp2')" x-mask:dynamic="phoneMask" autofocus required
+                            :value="old('whatsapp2')" x-mask:dynamic="phoneMask" autofocus
                             autocomplete="phone" />
 
                         <x-form.error :messages="$errors->get('whatsapp2')" />
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="space-y-2 col-span-2">
                         <x-form.label for="payment_methods" :value="__('Métodos de Pagamento *')" />
 
                         <x-form.select
@@ -407,7 +433,7 @@
                                 @foreach ( $apps as $app )
                                     <option
                                         value="{{ $app->id }}"
-                                        {{ $app->id === old('apps.' . $i . '.name') ? 'selected' : false }}
+                                        {{ $app->id == old('apps.' . $i . '.name') ? 'selected' : false }}
                                     >
                                         {{ $app->name }}
                                     </option>

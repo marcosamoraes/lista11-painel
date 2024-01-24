@@ -85,8 +85,6 @@
                         class="block w-full"
                         :value="old('expire_at', $company->lastOrderApproved?->expire_at?->format('d/m/Y'))"
                         autofocus
-                        disabled
-                        readonly
                     />
 
                     <x-form.error :messages="$errors->get('expire_at')" />
@@ -101,8 +99,8 @@
                     </h2>
                 </header>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
-                    <div class="space-y-2 col-span-3">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
+                    <div class="space-y-2 col-span-4">
                         <x-form.label for="name" :value="__('Nome *')" />
 
                         <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name', $company->name)"
@@ -110,6 +108,32 @@
 
                         <x-form.error :messages="$errors->get('name')" />
                     </div>
+
+                    @if (auth()->user()->role === 'admin')
+                        <div class="space-y-2">
+                            <x-form.label
+                                for="user_id"
+                                :value="__('Vendedor')"
+                            />
+
+                            <x-form.select
+                                id="user_id"
+                                name="user_id"
+                                type="text"
+                                class="block w-full select2"
+                                :value="old('user_id', $company->user_id)"
+                                autofocus
+                                autocomplete="user_id"
+                            >
+                                <option value="">Selecione</option>
+                                @foreach ( $sellers as $seller )
+                                    <option value="{{ $seller->id }}" {{ old('user_id', $company->user_id) == $seller->id ? 'selected' : false }}>{{ $seller->name }}</option>
+                                @endforeach
+                            </x-form.select>
+
+                            <x-form.error :messages="$errors->get('user_id')" />
+                        </div>
+                    @endif
 
                     @if (auth()->user()->role !== 'user')
                         <div class="space-y-2">
@@ -130,7 +154,7 @@
                             >
                                 <option value="">Selecione</option>
                                 @foreach ( $clients as $client )
-                                    <option value="{{ $client->id }}" {{ old('client_id', $company->client_id) === $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
+                                    <option value="{{ $client->id }}" {{ old('client_id', $company->client_id) == $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
                                 @endforeach
                             </x-form.select>
 
@@ -175,7 +199,7 @@
                         <x-form.error :messages="$errors->get('whatsapp2')" />
                     </div>
 
-                    <div class="space-y-2">
+                    <div class="space-y-2 col-span-2">
                         <x-form.label for="payment_methods" :value="__('Métodos de Pagamento *')" />
                         <x-form.select
                             id="payment_methods"
@@ -495,7 +519,7 @@
                                 @foreach ( $apps as $app )
                                     <option
                                         value="{{ $app->id }}"
-                                        {{ $app->id === old('apps.' . $i . '.name', isset($company->companyApps[$i-1]) ? $company->companyApps[$i-1]?->app_id : null) ? 'selected' : false }}
+                                        {{ $app->id == old('apps.' . $i . '.name', isset($company->companyApps[$i-1]) ? $company->companyApps[$i-1]?->app_id : null) ? 'selected' : false }}
                                     >
                                         {{ $app->name }}
                                     </option>

@@ -116,9 +116,10 @@ class CompanyController extends Controller
         })->get();
         $categories = Category::all();
         $apps = App::where('active', true)->get();
+        $sellers = User::select()->role(UserRoleEnum::Seller->value)->get();
 
         $openingHours = "Segunda-feira: 08h às 18h\nTerça-feira: 08h às 18h\nQuarta-feira: 08h às 18h\nQuinta-feira: 08h às 18h\nSexta-feira: 08h às 18h\nSábado: Fechado\nDomingo e Feriado: Fechado";
-        return view('companies.create', compact('clients', 'categories', 'apps', 'openingHours'));
+        return view('companies.create', compact('clients', 'categories', 'apps', 'openingHours', 'sellers'));
     }
 
     /**
@@ -138,7 +139,7 @@ class CompanyController extends Controller
 
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($validated['image']->getClientOriginalExtension() !== 'webp') {
+                if (in_array($validated['image']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                     $file = Webp::make($validated['image']);
 
                     if ($file->save(public_path('storage/' . $fileName))) {
@@ -156,7 +157,7 @@ class CompanyController extends Controller
 
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($validated['banner']->getClientOriginalExtension() !== 'webp') {
+                if (in_array($validated['banner']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                     $file = Webp::make($validated['banner']);
 
                     if ($file->save(public_path('storage/' . $fileName))) {
@@ -172,7 +173,7 @@ class CompanyController extends Controller
                 foreach ($validated['images'] as $image) {
                     $fileName = 'companies/' . uniqid() . '.webp';
 
-                    if ($image->getClientOriginalExtension() !== 'webp') {
+                    if (in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                         $file = Webp::make($image);
 
                         if ($file->save(public_path('storage/' . $fileName))) {
@@ -237,8 +238,9 @@ class CompanyController extends Controller
         })->get();
         $categories = Category::all();
         $apps = App::where('active', true)->get();
+        $sellers = User::select()->role(UserRoleEnum::Seller->value)->get();
 
-        return view('companies.edit', compact('company', 'clients', 'categories', 'apps'));
+        return view('companies.edit', compact('company', 'clients', 'categories', 'apps', 'sellers'));
     }
 
     /**
@@ -262,7 +264,7 @@ class CompanyController extends Controller
 
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($validated['image']->getClientOriginalExtension() !== 'webp') {
+                if (in_array($validated['image']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                     $file = Webp::make($validated['image']);
 
                     if ($file->save(public_path('storage/' . $fileName))) {
@@ -284,7 +286,7 @@ class CompanyController extends Controller
 
                 $fileName = 'companies/' . uniqid() . '.webp';
 
-                if ($validated['banner']->getClientOriginalExtension() !== 'webp') {
+                if (in_array($validated['banner']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                     $file = Webp::make($validated['banner']);
 
                     if ($file->save(public_path('storage/' . $fileName))) {
@@ -306,7 +308,7 @@ class CompanyController extends Controller
                 foreach ($validated['images'] as $image) {
                     $fileName = 'companies/' . uniqid() . '.webp';
 
-                    if ($image->getClientOriginalExtension() !== 'webp') {
+                    if (in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
                         $file = Webp::make($image);
 
                         if ($file->save(public_path('storage/' . $fileName))) {
@@ -322,6 +324,10 @@ class CompanyController extends Controller
             $validated['slug'] = Str::slug($validated['name']);
 
             $company->update($validated);
+
+            $company->lastOrderApproved()->update([
+                'expire_at' => $validated['expire_at'],
+            ]);
 
             $company->categories()->detach();
             foreach ($validated['categories'] as $category) {

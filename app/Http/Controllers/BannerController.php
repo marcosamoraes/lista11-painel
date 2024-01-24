@@ -39,15 +39,20 @@ class BannerController extends Controller
         try {
             $validated = $request->validated();
 
-            $webp = Webp::make($validated['image']);
-            $fileName = 'banners/' . uniqid() . '.webp';
-
             if (!file_exists(public_path('storage/banners'))) {
                 mkdir(public_path('storage/banners'), 0777, true);
             }
 
-            if ($webp->save(public_path('storage/' . $fileName))) {
-                $validated['image'] = $fileName;
+            $fileName = 'banners/' . uniqid() . '.webp';
+
+            if (in_array($validated['image']->getClientOriginalExtension(), ['jpg', 'jpeg', 'png'])) {
+                $file = Webp::make($validated['image']);
+
+                if ($file->save(public_path('storage/' . $fileName))) {
+                    $validated['image'] = $fileName;
+                }
+            } else {
+                $validated['image'] = $validated['image']->store('banners', 'public');
             }
 
             Banner::create($validated);

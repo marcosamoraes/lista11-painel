@@ -122,8 +122,11 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
+        $client->update(['cpf_cnpj' => $client->cpf_cnpj . ' - ' . $client->id]);
+        $client->user->update(['status' => 0, 'email' => $client->user->email . ' - ' . $client->id]);
+
         $client->delete();
-        $client->user->update(['status' => 0]);
+
         Alert::toast('Cliente deletado com sucesso.', 'success');
         return back();
     }

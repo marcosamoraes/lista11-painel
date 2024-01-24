@@ -42,7 +42,7 @@
                         <div class="w-full"></div>
                     @endif
                     @if (auth()->user()->role === 'admin')
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/clients">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -63,7 +63,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/companies?status=1">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -93,7 +93,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/companies?initial_expire_at={{ now()->subYear()->format('Y-m-d') }}&final_expire_at={{ now()->format('Y-m-d') }}">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -101,7 +101,7 @@
                                         <div class="flex flex-wrap">
                                             <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
                                                 <div
-                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-orange-500">
+                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
                                                     <i class="fa fa-building"></i>
                                                 </div>
                                                 <div class="text-center">
@@ -114,28 +114,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
-                            <a href="/sellers">
-                                <div
-                                    class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
-                                    <div class="flex-auto p-2">
-                                        <div class="flex flex-wrap">
-                                            <div class="relative w-[100px] h-[120px] flex-initial flex flex-col gap-3 items-center justify-center">
-                                                <div
-                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-pink-500">
-                                                    <i class="fa fa-user"></i>
-                                                </div>
-                                                <div class="text-center">
-                                                    <h5 class="text-black uppercase font-bold text-xs h-[30px]">Vendedores</h5>
-                                                    <span class="font-semibold text-sm text-black">{{ $countSellers }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/orders">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -156,7 +135,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/contacts">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -177,7 +156,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="w-6/12 sm:w-4/12 lg:w-3/12 mb-4 px-4 flex justify-center items-center">
+                        <div class="w-6/12 sm:w-4/12 lg:w-2/12 mb-4 px-4 flex justify-center items-center">
                             <a href="/registers">
                                 <div
                                     class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
