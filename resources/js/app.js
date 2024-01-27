@@ -62,9 +62,10 @@ document.addEventListener('alpine:init', () => {
         }
 
         const cpfCnpjMask = (input) => {
-            return input.length <= 14
-                ? '999.999.999-99'
-                : '99.999.999/9999-99';
+            const digitsOnly = input.replace(/\D/g, '');
+            return digitsOnly.length > 11
+                ? '99.999.999/9999-99'
+                : '999.999.999-99';
         }
 
         const imageViewer = () => {

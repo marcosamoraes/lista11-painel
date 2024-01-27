@@ -177,7 +177,7 @@ class CompanyController extends Controller
                         $file = Webp::make($image);
 
                         if ($file->save(public_path('storage/' . $fileName))) {
-                            $image[] = $fileName;
+                            $images[] = $fileName;
                         }
                     } else {
                         $images[] = $image->store('companies', 'public');

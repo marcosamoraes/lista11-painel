@@ -85,11 +85,23 @@ class Company extends Model
         parent::boot();
 
         self::creating(function ($company) {
-            $company->slug = Str::slug($company->name);
+            $slug = Str::slug($company->name);
+
+            if (self::where('slug', $slug)->exists()) {
+                $slug = $slug . '-' . Str::random(5);
+            }
+
+            $company->slug = $slug;
         });
 
         self::updating(function ($company) {
-            $company->slug = Str::slug($company->name);
+            $slug = Str::slug($company->name);
+
+            if (self::where('slug', $slug)->where('id', '!=', $company->id)->exists()) {
+                $slug = $slug . '-' . Str::random(5);
+            }
+
+            $company->slug = $slug;
         });
     }
 

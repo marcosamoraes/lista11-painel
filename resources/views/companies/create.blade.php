@@ -73,7 +73,7 @@
                             >
                                 <option value="">Selecione</option>
                                 @foreach ( $clients as $client )
-                                    <option value="{{ $client->id }}" {{ old('client_id') === $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
+                                    <option value="{{ $client->id }}" {{ old('client_id') == $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
                                 @endforeach
                             </x-form.select>
 
