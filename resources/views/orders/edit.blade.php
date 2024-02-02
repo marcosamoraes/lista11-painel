@@ -17,7 +17,7 @@
                         @for ($i = 0; $i < old('parcels', $order->parcels); $i++)
                             {
                                 id: {{ $i+1 }},
-                                value: {{ old("parcelData.$i.value", $order->parcels_data[$i]['value'] ?? 0) }},
+                                value: '{{ old("parcelData.$i.value", $order->parcels_data[$i]['value'] ?? 0) }}',
                                 due_date: '{{ old("parcelData.$i.due_date", $order->parcels_data[$i]['due_date'] ?? now()->addMonths($i)->format('Y-m-d')) }}',
                                 payment_method: '{{ old("parcelData.$i.payment_method", $order->parcels_data[$i]['payment_method'] ?? '') }}',
                             },
