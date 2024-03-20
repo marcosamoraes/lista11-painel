@@ -325,6 +325,12 @@ class CompanyController extends Controller
 
             $company->update($validated);
 
+            $company->children()->update([
+                'image' => $company->image,
+                'banner' => $company->banner,
+                'images' => $company->images,
+            ]);
+
             $company->lastOrderApproved()->update([
                 'expire_at' => $validated['expire_at'],
             ]);
