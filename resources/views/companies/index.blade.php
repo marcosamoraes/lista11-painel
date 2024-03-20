@@ -121,7 +121,11 @@
                                                 @endif
                                             @endif
                                             <p>
-                                                {{ $company->name }}<br />
+                                                {{ $company->name }}
+                                                @if ($company->parent_id)
+                                                    <span class="text-xs bg-black text-white px-2 py-1 rounded-full">Cópia</span>
+                                                @endif
+                                                <br />
                                                 @if (auth()->user()->role === 'admin')
                                                     <small>Vendedor: {{ $company->user?->name ?? 'Sem vendedor' }}</small><br />
                                                 @endif
