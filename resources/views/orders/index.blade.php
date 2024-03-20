@@ -191,6 +191,13 @@
                                                         <i class="fas fa-edit"></i>
                                                     </x-button>
                                                 </a>
+                                                <form method="POST" action="{{ route('orders.destroy', $order->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <x-button variant="danger" onclick="if (!confirm('Você tem certeza que quer deletar?')) return false">
+                                                        <i class="fas fa-trash"></i>
+                                                    </x-button>
+                                                </form>
                                             </td>
                                         @endif
                                     </tr>

@@ -371,9 +371,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="video_link" :value="__('Link do Vídeo')" />
+                        <x-form.label for="video_link" :value="__('Link dos Vídeos')" />
 
-                        <x-form.input id="video_link" name="video_link" type="text" class="block w-full"
+                        <x-form.input id="video_link" name="video_link" type="text" class="block w-full" placeholder="Separe os links por vírgula"
                             :value="old('video_link')" autofocus autocomplete="video_link" />
 
                         <x-form.error :messages="$errors->get('video_link')" />

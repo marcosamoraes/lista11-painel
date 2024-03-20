@@ -459,9 +459,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="video_link" :value="__('Link do Vídeo')" />
+                        <x-form.label for="video_link" :value="__('Link dos Vídeos')" />
 
-                        <x-form.input id="video_link" name="video_link" type="text" class="block w-full"
+                        <x-form.input id="video_link" name="video_link" type="text" class="block w-full" placeholder="Separe os links por vírgula"
                             :value="old('video_link', $company->video_link)" autofocus autocomplete="video_link" />
 
                         <x-form.error :messages="$errors->get('video_link')" />
@@ -541,93 +541,95 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
-                <header class="mb-5">
-                    <h2 class="text-lg font-medium">
-                        {{ __('Imagens ') }}
-                    </h2>
-                </header>
+            @if (!$company->parent_id)
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
+                    <header class="mb-5">
+                        <h2 class="text-lg font-medium">
+                            {{ __('Imagens ') }}
+                        </h2>
+                    </header>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imageViewer()">
-                    <div class="space-y-2">
-                        <x-form.label for="image" :value="__('Imagem principal (500x500px)')" />
-                        <x-form.input-file id="image" name="image" autofocus autocomplete="image" @change="fileChosen" />
-                        <x-form.error :messages="$errors->get('image')" />
-                    </div>
-                    <input type="hidden" name="image_url" value="{{ old('image', $company->image_url) }}">
+                    <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imageViewer()">
+                        <div class="space-y-2">
+                            <x-form.label for="image" :value="__('Imagem principal (500x500px)')" />
+                            <x-form.input-file id="image" name="image" autofocus autocomplete="image" @change="fileChosen" />
+                            <x-form.error :messages="$errors->get('image')" />
+                        </div>
+                        <input type="hidden" name="image_url" value="{{ old('image', $company->image_url) }}">
 
-                    <div class="space-y-2">
-                        <x-form.label for="image" :value="__('Preview')" />
-                        <template x-if="imageUrl">
-                            <img :src="imageUrl"
-                                class="object-cover rounded border border-gray-200"
-                                style="width: 100px; height: 100px;"
-                            >
-                        </template>
-                        <!-- Show the gray box when image is not available -->
-                        <template x-if="!imageUrl">
-                            <div
-                                class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
-                            ></div>
-                        </template>
+                        <div class="space-y-2">
+                            <x-form.label for="image" :value="__('Preview')" />
+                            <template x-if="imageUrl">
+                                <img :src="imageUrl"
+                                    class="object-cover rounded border border-gray-200"
+                                    style="width: 100px; height: 100px;"
+                                >
+                            </template>
+                            <!-- Show the gray box when image is not available -->
+                            <template x-if="!imageUrl">
+                                <div
+                                    class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
+                                ></div>
+                            </template>
+                        </div>
+                        <input type="hidden" name="images_url[]" value="{{ $company->images_url ? $company->images_url->join(',') : null }}">
                     </div>
-                    <input type="hidden" name="images_url[]" value="{{ $company->images_url ? $company->images_url->join(',') : null }}">
+
+                    <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="bannerViewer()">
+                        <div class="space-y-2">
+                            <x-form.label for="banner" :value="__('Banner (1920x520px)')" />
+                            <x-form.input-file id="banner" name="banner" autofocus autocomplete="banner" @change="fileChosen" />
+                            <x-form.error :messages="$errors->get('banner')" />
+                        </div>
+                        <input type="hidden" name="banner_url" value="{{ old('banner', $company->banner_url) }}">
+
+                        <div class="space-y-2">
+                            <x-form.label for="banner" :value="__('Preview')" />
+                            <template x-if="bannerUrl">
+                                <img :src="bannerUrl"
+                                    class="object-cover rounded border border-gray-200"
+                                    style="width: 100px; height: 100px;"
+                                >
+                            </template>
+                            <!-- Show the gray box when banner is not available -->
+                            <template x-if="!bannerUrl">
+                                <div
+                                    class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
+                                ></div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imagesViewer()">
+                        <div class="space-y-2">
+                            <x-form.label for="images" :value="__('Outras imagens')" />
+                            <x-form.input-file id="images" name="images[]" autofocus autocomplete="images" multiple @change="fileChosen" />
+                            <x-form.error :messages="$errors->get('images')" />
+                        </div>
+
+                        <div class="space-y-2">
+                            <x-form.label for="images" :value="__('Preview')" />
+                            <template x-if="imagesUrl">
+                                {{-- loop for each imagesUrl --}}
+                                <div class="flex gap-2">
+                                    <template x-for="(url, index) in imagesUrl" :key="index">
+                                        <img :src="url"
+                                            class="object-cover rounded border border-gray-200"
+                                            style="width: 100px; height: 100px;"
+                                        >
+                                    </template>
+                                </div>
+                            </template>
+                            <!-- Show the gray box when images is not available -->
+                            <template x-if="!imagesUrl">
+                                <div
+                                    class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
+                                ></div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="bannerViewer()">
-                    <div class="space-y-2">
-                        <x-form.label for="banner" :value="__('Banner (1920x520px)')" />
-                        <x-form.input-file id="banner" name="banner" autofocus autocomplete="banner" @change="fileChosen" />
-                        <x-form.error :messages="$errors->get('banner')" />
-                    </div>
-                    <input type="hidden" name="banner_url" value="{{ old('banner', $company->banner_url) }}">
-
-                    <div class="space-y-2">
-                        <x-form.label for="banner" :value="__('Preview')" />
-                        <template x-if="bannerUrl">
-                            <img :src="bannerUrl"
-                                class="object-cover rounded border border-gray-200"
-                                style="width: 100px; height: 100px;"
-                            >
-                        </template>
-                        <!-- Show the gray box when banner is not available -->
-                        <template x-if="!bannerUrl">
-                            <div
-                                class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
-                            ></div>
-                        </template>
-                    </div>
-                </div>
-
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4" x-data="imagesViewer()">
-                    <div class="space-y-2">
-                        <x-form.label for="images" :value="__('Outras imagens')" />
-                        <x-form.input-file id="images" name="images[]" autofocus autocomplete="images" multiple @change="fileChosen" />
-                        <x-form.error :messages="$errors->get('images')" />
-                    </div>
-
-                    <div class="space-y-2">
-                        <x-form.label for="images" :value="__('Preview')" />
-                        <template x-if="imagesUrl">
-                            {{-- loop for each imagesUrl --}}
-                            <div class="flex gap-2">
-                                <template x-for="(url, index) in imagesUrl" :key="index">
-                                    <img :src="url"
-                                        class="object-cover rounded border border-gray-200"
-                                        style="width: 100px; height: 100px;"
-                                    >
-                                </template>
-                            </div>
-                        </template>
-                        <!-- Show the gray box when images is not available -->
-                        <template x-if="!imagesUrl">
-                            <div
-                                class="border rounded border-gray-200 bg-gray-100 w-full lg:w-[100px] h-[100px]"
-                            ></div>
-                        </template>
-                    </div>
-                </div>
-            </div>
+            @endif
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg dark:bg-gray-800">
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">

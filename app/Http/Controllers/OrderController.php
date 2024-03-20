@@ -230,6 +230,22 @@ class OrderController extends Controller
         }
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Order $order)
+    {
+        try {
+            $order->delete();
+            Alert::toast('Pedido excluído com sucesso.', 'success');
+            return Redirect::route('orders.index');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            Alert::toast('Falha ao excluir pedido.', 'error');
+            return Redirect::route('orders.index');
+        }
+    }
+
     public function generatePaymentLink(Order $order)
     {
         MercadoPagoConfig::setAccessToken(env('MERCADOPAGO_ACCESS_TOKEN'));

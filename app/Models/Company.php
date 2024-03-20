@@ -21,6 +21,7 @@ class Company extends Model
     protected $fillable = [
         'user_id',
         'client_id',
+        'parent_id',
         'name',
         'slug',
         'description',
@@ -222,5 +223,21 @@ class Company extends Model
     public function companyApps()
     {
         return $this->hasMany(CompanyApp::class);
+    }
+
+    /**
+     * Get the parent company.
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Company::class, 'parent_id');
+    }
+
+    /**
+     * Get the children companies.
+     */
+    public function children()
+    {
+        return $this->hasMany(Company::class, 'parent_id');
     }
 }

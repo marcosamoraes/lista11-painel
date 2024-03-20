@@ -186,7 +186,7 @@ class CompanyController extends Controller
                 $validated['images'] = $images;
             }
 
-            $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
+            $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : $validated['user_id'];
 
             $validated['slug'] = Str::slug($validated['name']);
 
@@ -385,4 +385,31 @@ class CompanyController extends Controller
     {
         return Excel::download(new CompanyExport, 'empresas.xlsx');
     }
+
+    /**
+     * Duplicate the specified resource from storage.
+     */
+    public function duplicate(Company $company)
+    {
+        $newCompany = $company->replicate();
+        $newCompany->name = $company->name . ' (Cópia)';
+        $newCompany->parent_id = $company->id;
+        $newCompany->save();
+
+        $newCompany->categories()->attach($company->categories->pluck('id')->toArray());
+        $newCompany->tags()->attach($company->tags->pluck('id')->toArray());
+
+        foreach ($company->companyApps as $app) {
+            CompanyApp::updateOrCreate([
+                'company_id' => $newCompany->id,
+                'app_id' => $app->app_id,
+            ],[
+                'url' => $app->url,
+            ]);
+        }
+
+        Alert::toast('Empresa duplicada com sucesso.', 'success');
+        return Redirect::route('companies.index');
+    }
+
 }

@@ -155,11 +155,34 @@
                                                 </x-button>
                                             </a>
                                         @endif
+                                        <a href="https://lista11brasil.com.br/empresa/{{ str()->slug($company->categories[0]->name) }}/{{ str()->slug($company->city) }}/{{ $company->slug }}" target="_blank">
+                                            <x-button variant="info" title="Ver site">
+                                                <i class="fas fa-eye"></i>
+                                            </x-button>
+                                        </a>
+
+                                        @if (!$company->parent_id)
+                                            <a href="{{ route('companies.duplicate', $company->id) }}">
+                                                <x-button variant="secondary">
+                                                    <i class="fas fa-clone"></i>
+                                                </x-button>
+                                            </a>
+                                        @endif
+
                                         <a href="{{ route('companies.edit', $company->id) }}">
                                             <x-button variant="warning">
                                                 <i class="fas fa-edit"></i>
                                             </x-button>
                                         </a>
+
+                                        @if ($company->parent_id)
+                                            <a href="{{ route('companies.edit', $company->parent_id) }}">
+                                                <x-button variant="primary" title="Editar empresa principal">
+                                                    <i class="fas fa-edit"></i>
+                                                </x-button>
+                                            </a>
+                                        @endif
+
                                         @if (auth()->user()->role === 'admin')
                                             <form method="POST" action="{{ route('companies.destroy', $company->id) }}">
                                                 @csrf
