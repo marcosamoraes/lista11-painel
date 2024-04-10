@@ -400,6 +400,7 @@ class CompanyController extends Controller
         $newCompany = $company->replicate();
         $newCompany->name = $company->name . ' (Cópia)';
         $newCompany->parent_id = $company->id;
+        $newCompany->slug = Str::slug($company->name) . '-' . Str::random(5);
         $newCompany->save();
 
         $newCompany->categories()->attach($company->categories->pluck('id')->toArray());
