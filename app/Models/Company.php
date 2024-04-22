@@ -98,7 +98,7 @@ class Company extends Model
         self::updating(function ($company) {
             $slug = Str::slug($company->name);
 
-            if (self::where('slug', $slug)->where('id', '!=', $company->id)->exists()) {
+            if (self::withTrashed()->where('slug', $slug)->where('id', '!=', $company->id)->exists()) {
                 $slug = $slug . '-' . Str::random(5);
             }
 
