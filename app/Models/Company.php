@@ -88,7 +88,7 @@ class Company extends Model
         self::creating(function ($company) {
             $slug = Str::slug($company->name);
 
-            if (self::where('slug', $slug)->exists()) {
+            if (self::withTrashed()->where('slug', $slug)->exists()) {
                 $slug = $slug . '-' . Str::random(5);
             }
 

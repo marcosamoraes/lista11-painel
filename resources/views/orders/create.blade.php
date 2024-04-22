@@ -27,7 +27,7 @@
             >
                 @csrf
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-5 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
                             for="company_id"
@@ -127,6 +127,32 @@
                         />
 
                         <x-form.error :messages="$errors->get('parcels')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label
+                            for="status"
+                            :value="__('Status *')"
+                        />
+
+                        <x-form.select
+                            id="status"
+                            name="status"
+                            type="text"
+                            class="block w-full"
+                            :value="old('status')"
+                            required
+                            autofocus
+                            autocomplete="status"
+                        >
+                            <option {{ !old('status') ? 'selected' : false }}>Selecione</option>
+                            <option value="accomplished" {{ old('status') === 'accomplished' ? 'selected' : false }}>Concretizado</option>
+                            <option value="opened" {{ old('status') === 'opened' ? 'selected' : false }}>Em Aberto</option>
+                            <option value="cancelled" {{ old('status') === 'cancelled' ? 'selected' : false }}>Cancelado</option>
+                            <option value="not_renewed" {{ old('status') === 'not_renewed' ? 'selected' : false }}>Não renovado</option>
+                        </x-form.select>
+
+                        <x-form.error :messages="$errors->get('status')" />
                     </div>
                 </div>
 

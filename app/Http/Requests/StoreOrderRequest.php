@@ -39,6 +39,7 @@ class StoreOrderRequest extends FormRequest
             'image' => ['nullable', 'file'],
             'parcels' => ['nullable', 'integer'],
             'parcels_data' => ['nullable', 'string'],
+            'status' => ['nullable'],
         ];
     }
 }
