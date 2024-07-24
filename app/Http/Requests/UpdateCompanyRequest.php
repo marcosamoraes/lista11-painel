@@ -66,7 +66,7 @@ class UpdateCompanyRequest extends FormRequest
             'instagram' => 'nullable|string|max:255',
             'youtube' => 'nullable|string|max:255',
             'google_my_business' => 'nullable|string|max:255',
-            'video_link' => 'nullable|string|max:255',
+            'video_link' => 'nullable|string',
             'photo_360_link' => 'nullable|string|max:255',
             'photo_360_code' => 'nullable|string',
             'payment_methods' => 'nullable|string|max:255',
